@@ -2,16 +2,15 @@
 {% from "helper.html" import displayField %}
 
 {% block title %}
-    Registration
+    Log In
 {% endblock %}
 
 {% block main %}
 
-    <form action="{{ url_for('index') }}", method="POST">
+    <form action="{{ url_for('login') }}", method="POST">
 
         {{ displayField(form.username, "Username", autocomplete="off", autofocus=true) }}
         {{ displayField(form.password, "Password") }}
-        {{ displayField(form.password_confirm, "Confirm Password") }}
  
         <div>
             {{ form.submit_button(class_="btn btn-primary") }}

@@ -1,8 +1,6 @@
 import os
-import requests
-from flask import Flask, render_template, request
-from flask_socketio import SocketIO, emit, join_room, leave_room
-from form import *
+from flask import Flask, render_template, redirect, url_for
+from forms import *
 from models import *
 
 app = Flask(__name__)
@@ -25,19 +23,24 @@ def index():
         username = reg_form.username.data
         password = reg_form.password.data
 
-        # check if username is unique
-        user = User.query.filter_by(username=username).first()
-
-        if user:
-            return "username already in use"
-
         # add the user to the db
         new_user = User(username=username, password=password)
         db.session.add(new_user)
         db.session.commit()
-        return "new user added to DB"
+        return redirect(url_for("login"))
     
     return render_template("index.html", form=reg_form)
+
+
+@app.route("/login", methods=["Get", "Post"])
+def login():
+
+    login_form = LogInForm()
+
+    if login_form.validate_on_submit():
+        return "You have logged in"
+
+    return render_template("login.html", form=login_form)
 
 
 if __name__ == "__main__":
