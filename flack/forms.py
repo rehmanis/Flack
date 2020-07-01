@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, EqualTo, ValidationError
-from models import User
+from .models import User
 
 def validate_credentials(form, field):
     """ Check if username and password match the DB """
@@ -10,8 +10,6 @@ def validate_credentials(form, field):
 
     if (query is None or query.password != field.data):
         raise ValidationError("Invalid username or password")
-
-
 
 class RegistrationForm(FlaskForm):
     """ Registration Form """

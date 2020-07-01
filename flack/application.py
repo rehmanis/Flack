@@ -1,16 +1,8 @@
 import os
 from flask import Flask, render_template, redirect, url_for
-from forms import *
-from models import *
-
-app = Flask(__name__)
-app.secret_key = "replace_later"
-
-# Configure database
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://tiljyipwqoxvsk:1f21faf5c09e2db96d620a26ec45b353ed4ed1e2b334e23b70272118b1396264@ec2-52-72-221-20.compute-1.amazonaws.com:5432/d6q05nuc03l818"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-db = SQLAlchemy(app)
-
+from .forms import *
+from .models import *
+from flack import db, app
 
 @app.route("/", methods=["Get", "Post"])
 def index():

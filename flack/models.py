@@ -1,6 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
+from flack import db
+# from flask.ext.bcrypt import Bcrypt
 
-db = SQLAlchemy()
+# db = SQLAlchemy()
+# bcrypt = Bcrypt()
 
 class User(db.Model):
     __tablename__ = "users"
