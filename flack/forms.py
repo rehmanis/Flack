@@ -6,9 +6,9 @@ from .models import User
 def validate_credentials(form, field):
     """ Check if username and password match the DB """
 
-    query = User.query.filter_by(username=form.username.data).first()
+    user = User.query.filter_by(username=form.username.data).first()
 
-    if (query is None or query.password != field.data):
+    if user is None or not user.verify_password(form.password.data):
         raise ValidationError("Invalid username or password")
 
 class RegistrationForm(FlaskForm):
@@ -30,6 +30,8 @@ class RegistrationForm(FlaskForm):
     submit_button = SubmitField("Register")
 
     def validate_username(self, field):
+        test = User.query.filter_by(username=field.data).first()
+
         if User.query.filter_by(username=field.data).first():
             raise ValidationError(f"Username '{field.data}' is already in use. Please chose another")
 

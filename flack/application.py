@@ -11,6 +11,7 @@ def index():
 
     if reg_form.validate_on_submit():
 
+        print("\n\n here \n\n")
         # get the inputted fields from the form
         username = reg_form.username.data
         password = reg_form.password.data
