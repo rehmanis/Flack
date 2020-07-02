@@ -23,6 +23,19 @@
     </head>
 
     <body>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <header>
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} border text-center" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </header>
+            {% endif %}
+        {% endwith %}
+
         <main class="container p-5">
             {% block main %}{% endblock %}
         </main>

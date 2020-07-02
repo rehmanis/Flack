@@ -3,6 +3,7 @@ Flask-SocketIO
 Flask-WTF
 flask-sqlalchemy
 flask-bcrypt
+flask-login
 requests
 psycopg2
 
