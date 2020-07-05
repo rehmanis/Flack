@@ -1,10 +1,13 @@
 import os
 from flask import Flask, render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
+from flask_socketio import emit, send, join_room, leave_room
+from datetime import datetime
 from .forms import *
 from .models import *
-from flack import db, app, login_manager
+from flack import db, app, login_manager, socketio
 
+CHANNELS = ["general", "other"]
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -55,5 +58,12 @@ def logout():
     flash("Successfully logged out", "success")
     return redirect(url_for("login"))
 
+
+@socketio.on("message")
+def message(data):
+    msg_time = datetime.now().strftime("%d %B, %Y %H:%M:%S")
+    send({"username": data["username"], "msg": data["msg"], "time": msg_time}, broadcast=True)
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    socketio.run(app, debug=True)
