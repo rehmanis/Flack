@@ -1,0 +1,30 @@
+/* change the cursor to pointer */ 
+.cursor_pointer {
+    cursor: pointer;
+}
+
+.wrapper {
+    display: flex;
+    align-items: stretch;
+}
+
+
+#sidebar {
+    margin-top: 2em;
+    float: left; 
+    min-height: 100vh;
+    padding-left: 2em;
+    padding-top: 4em;
+    padding-right:1em;
+    border-right: 0.5px solid #898c91;
+}
+
+#sidebar ul li ul {
+    padding-left: 0.5em;
+}
+
+
+#main-section {
+    overflow: hidden; /* Makee this div contain its floated children */
+    width: 100%;
+}

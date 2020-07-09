@@ -2,37 +2,23 @@
 {% from "helper.html" import displayField %}
 
 {% block title %}
-    Chat
+    Registration
 {% endblock %}
 
 {% block main %}
 
-    <!-- Sidebar -->
-    <nav id="side_bar">
-        
-    </nav>
+    <form action="{{ url_for('index') }}", method="POST">
 
-    <!-- Message area -->
-    <div id="message_area">
-        <!-- Display the messages -->
-        <div id="message_section">
-        </div>
-        <!-- Send messages -->
-        <div id="input_section">
-            <input type="text" id="user_message" placeholder="Type here..." autofocus autocomplete="off">
-            <button id="send_message" type="button" > Send </button>
+        {{ displayField(form.username, "Username", autocomplete="off", autofocus=true) }}
+        {{ displayField(form.password, "Password") }}
+        {{ displayField(form.password_confirm, "Confirm Password") }}
+ 
+        <div class="form-group">
+            {{ form.submit_button(class_="btn btn-primary") }}
         </div>
 
-    </div>
-    <!-- End Message area-->
+        {{ form.csrf_token }}
 
-    <script>
-        const username = `{{ current_user.username }}`
-    </script>
-    
-    <!-- SocketIO JS Library -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
-    <!-- our custom scoket JS -->
-    <script defer src="{{ url_for('static', filename='scripts/socket.js') }}"></script>
+    </form>
 
 {% endblock %}

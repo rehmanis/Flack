@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Flack Chat </title>
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+        <!-- Custom css for chat pages -->
+        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/chat.css')}}">
+    </head>
+    <body>
+
+        <!-- BEGIN wrapper -->
+        <div class="wrapper">
+
+            <!-- BEGIN Top Nav bar -->
+            <nav class="navbar fixed-top navbar-expand-sm navbar-light" style="background-color: #C0C0C0">
+                <div class="container-fluid">
+                    <div id="show_sidebar_button" class="cursor_pointer">
+                        <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                        <span>Menu</span>
+                    </div>
+                    <!-- bootstrap toggle button -->
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarContent">
+                        <div class="navbar-nav ml-auto">
+                            <a id="logout_btn" class="nav-item nav-link" href="{{ url_for('logout') }}"><span style="color: #335177">Logout</span></a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- END Top Nav bar -->
+
+            <!-- BEGIN main section that will contain the sidebar and messaging areas -->
+            <div id="main_section">
+                
+                <!-- BEGIN left side navbar -->
+                <nav id="sidebar">
+                    <ul class="list-unstyled components">
+                        <li>
+                            <div id="channel_header">
+                                <a href="#channels" data-toggle="collapse" aria-expanded="false">
+                                    <i class="fa fa-caret-right" aria-hidden="true"></i>
+                                    Channels
+                                </a>
+                                <a href="#" id="add_channel" class="ml-auto">
+                                    <i class="fa fa-plus-circle aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            <ul class="collapse show list-unstyled" id="channels">
+                                {%  for channel in channels %}
+                                    <li><a href="#">{{ channel }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#usersList" data-toggle="collapse" aria-expanded="false">
+                                <i class="fa fa-caret-right" aria-hidden="true"></i>
+                                Direct Message
+                            </a>
+                            <ul class="collapse show list-unstyled" id="usersList">
+                                {%  for user in users %}
+                                    <li><a href="#">{{ user }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- END left side navbar -->
+
+                <!-- BEGIN Message area -->
+                <div id="message_area">
+                    <!-- Display the messages -->
+                    <div id="message_section">
+                    </div>
+                    <!-- Send messages -->
+                    <div id="input_section">
+                        <input type="text" id="user_message" class="form-group" placeholder="Type here..." aria-label="Type message here" autofocus autocomplete="off">
+                        <button id="send_message" class="btn btn-dark" type="button" > Send </button>
+                    </div>
+                </div>
+                <!-- End Message area-->
+                
+            </div>
+            <!-- END main section-->
+
+        </div>
+        <!-- END wrapper -->
+
+        <script>
+            const username = `{{ current_user.username }}`;
+            const users = '{{ users }}';
+            console.log(users)
+        </script>
+        
+        <!-- SocketIO JS Library -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+        
+        <!-- our custom chat JS -->
+        <script defer src="{{ url_for('static', filename='scripts/chat.js') }}"></script>
+        <!-- our custom scoket JS -->
+        <script defer src="{{ url_for('static', filename='scripts/socket.js') }}"></script>
+
+        <!-- Bootstrap -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    
+        <!-- Font Awesome JS -->
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
+
+    </body>
+</html>
