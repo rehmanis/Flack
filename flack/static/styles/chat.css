@@ -1,30 +1,60 @@
-/* change the cursor to pointer */ 
-.cursor_pointer {
-    cursor: pointer;
-}
-
 .wrapper {
     display: flex;
-    align-items: stretch;
+    flex-direction: column;
+    min-height: 100vh;
+    
+}
+
+#main_section{
+    
+    display: flex;
+    flex-direction: row;
+    flex: 1;
 }
 
 
 #sidebar {
-    margin-top: 2em;
-    float: left; 
-    min-height: 100vh;
-    padding-left: 2em;
-    padding-top: 4em;
-    padding-right:1em;
-    border-right: 0.5px solid #898c91;
+    
+    padding: 2em;
+    background-color: #607B8B;
+    flex: 0 0 30vw;
+    color: white;
+    
 }
 
-#sidebar ul li ul {
-    padding-left: 0.5em;
+#sidebar li a{
+    color: white;
+    text-decoration: none !important;
+}
+
+#sidebar ul li ul{
+    margin-left: 1em;
+}
+
+#sidebar ul li ul li:hover{
+    background-color: #6996AD;
+}
+
+#add_channel {
+    float: right;
+}
+
+#message_area {
+    
+    flex: 1;
+    
 }
 
 
-#main-section {
-    overflow: hidden; /* Makee this div contain its floated children */
-    width: 100%;
+#message_section {
+    
+    height: 85vh;
+    overflow-y: auto; /*Make  this section scrolable */
+    padding: 1em;
+    
+    
+}
+
+#input_section {
+    padding: 1em;
 }

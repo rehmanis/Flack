@@ -28,6 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
             input.type = 'text';
             input.placeholder = "Channel name..."
             input.id = "new_channel"
+            input.style.background = "#325C74";
+            input.style.border = "none";
+            input.style.color = "white";
 
 
             li.append(input);
