@@ -54,10 +54,12 @@
                                     <i class="fa fa-plus-circle aria-hidden="true"></i>
                                 </a>
                             </div>
-                            <ul class="collapse show list-unstyled" id="channels">
-                                {%  for channel in channels %}
+                            <ul class="collapse show remove-style select-elements" id="channels">
+                                <li class="active"><a href="#">general</a></li>
+                                <li><a href="#">other</a></li>
+                                <!-- {%  for channel in channels %}
                                     <li><a href="#">{{ channel }}</a></li>
-                                {% endfor %}
+                                {% endfor %} -->
                             </ul>
                         </li>
                         <li>
@@ -65,7 +67,7 @@
                                 <i class="fa fa-caret-right" aria-hidden="true"></i>
                                 Direct Message
                             </a>
-                            <ul class="collapse show list-unstyled" id="usersList">
+                            <ul class="collapse show list-unstyled select-elements" id="usersList">
                                 {%  for user in users %}
                                     <li><a href="#">{{ user }}</a></li>
                                 {% endfor %}

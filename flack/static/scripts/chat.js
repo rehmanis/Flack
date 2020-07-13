@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addChannel.onclick = () =>{
 
+        console.log("add Channel");
         if (!document.querySelector("#new_channel")){
             const li = document.createElement("li");
             const input = document.createElement("input");
@@ -28,9 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
             input.type = 'text';
             input.placeholder = "Channel name..."
             input.id = "new_channel"
-            input.style.background = "#325C74";
-            input.style.border = "none";
-            input.style.color = "white";
+            input.className += " new-channel"
+            // input.style.background = "#325C74";
+            // input.style.border = "none";
+            // input.style.color = "white";
 
 
             li.append(input);
@@ -47,6 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const input = document.querySelector("#new_channel");
         event.preventDefault();
+        console.log(input);
+        console.log(input.value);
 
         if (input.value.length > 0 && event.keyCode === 13){
             const a = document.createElement("a");
@@ -57,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(input.parentNode.innerHTML); 
             input.parentNode.innerHTML = a.outerHTML;
 
-            users.foreach(joinChannel(input.value));
+            // users.foreach(joinChannel(input.value));
         }
     }
 

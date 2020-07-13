@@ -16,8 +16,8 @@
 #sidebar {
     
     padding: 2em;
-    background-color: #607B8B;
-    flex: 0 0 30vw;
+    background-color: #386c8a;
+    flex: 0 0 25vw;
     color: white;
     
 }
@@ -28,10 +28,10 @@
 }
 
 #sidebar ul li ul{
-    margin-left: 1em;
+   
 }
 
-#sidebar ul li ul li:hover{
+#sidebar ul li ul li:hover, .active{
     background-color: #6996AD;
 }
 
@@ -58,3 +58,40 @@
 #input_section {
     padding: 1em;
 }
+
+.remove-style {
+    padding: 0;
+    list-style: none; 
+} /* Remove default bullets */
+
+#channels li::before {
+    content: "\0023"; /* Unicode bullet symbol */
+    color: white;  /* Bullet color */
+	
+	/* Optional tweaks */
+
+}
+
+
+.username {
+
+    font-size: 1.1em;
+    font-weight: bold;
+
+}
+
+.time {
+    font-size: 0.9em;
+}
+
+.new-channel {
+    background-color: #325C74;
+    border: none;
+    color: white;
+    opacity: 0.8;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 0.7; /* Firefox */
+  }

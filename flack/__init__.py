@@ -23,6 +23,14 @@ login_manager.login_view = "login"
 login_manager.login_message_category = "danger"
 
 import flack.application
-import flack.models
+from flack.models import User, Message, Channel
 
+db.create_all()
+db.session.commit()
 
+# create the initial channels
+# chan1 = Channel(name="general")
+# chan2 = Channel(name="other")
+# db.session.add(chan1)
+# db.session.add(chan2)
+# db.session.commit()
