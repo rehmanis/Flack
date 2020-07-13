@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Enable send message button only if there is text in the input field
     inputMessage.onkeyup = () => {
-        console.log(inputMessage.value.length);
+        
         if (inputMessage.value.length > 0)
             sendButton.disabled = false;
         else

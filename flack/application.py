@@ -87,7 +87,8 @@ def message(data):
     print(data["room"])
     print()
 
-    send({"username": data["username"], "msg": data["msg"], "time": msg_time, "date": msg_date}, room=data["room"])
+    send({"username": data["username"], "msg": data["msg"], 
+          "time": msg_time, "date": msg_date, "room": data["room"]}, room=data["room"])
 
 
 @socketio.on('join')

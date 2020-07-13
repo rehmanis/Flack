@@ -13,7 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     socket.on("message", data => {
         console.log("message received");
-        displayMessage(data);
+        if (currRoom === data.room){
+            displayMessage(data);
+        }else{
+            // add a bubble next to channel to indicate unread message in visible
+            // channels
+        }
+
 
     });
 
