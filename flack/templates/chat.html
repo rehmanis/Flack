@@ -15,11 +15,36 @@
     </head>
     <body>
 
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Create new channel</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                          <label for="new-channel-name" class="col-form-label">Name:</label>
+                          <input type="text" class="form-control" id="new-channel-name">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary">create</button>
+                </div>
+              </div>
+            </div>
+        </div>
+          
+
         <!-- BEGIN wrapper -->
         <div class="wrapper">
-
             <!-- BEGIN Top Nav bar -->
-            <nav class="navbar navbar-expand-sm navbar-light" style="background-color: #325C74">
+            <nav class="navbar navbar-expand-sm py-0" style="background-color: #325C74">
                 <div class="container-fluid">
                     <!-- <div id="show_sidebar_button" class="cursor_pointer">
                         <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
@@ -38,6 +63,17 @@
             </nav>
             <!-- END Top Nav bar -->
 
+            <nav id="" class="navbar navbar-expand-sm navbar-light">
+
+                <div id="curr_user_display">
+                    Team Test
+                    <div id="get_username">
+                        {{ current_user.username }}
+                    </div>
+                </div>
+
+            </nav>
+
             <!-- BEGIN main section that will contain the sidebar and messaging areas -->
             <div id="main_section">
                 
@@ -50,9 +86,13 @@
                                     <i class="fa fa-caret-right" aria-hidden="true"></i>
                                     Channels
                                 </a>
-                                <a href="#" id="add_channel" class="ml-auto">
+                                <!-- Button trigger modal -->
+                                <button type="button" id="add_channel" class="ml-auto" data-toggle="modal" data-target="#exampleModal">
                                     <i class="fa fa-plus-circle aria-hidden="true"></i>
-                                </a>
+                                </button>
+                                <!-- <a href="#" id="add_channel" class="ml-auto">
+                                    <i class="fa fa-plus-circle aria-hidden="true"></i>
+                                </a> -->
                             </div>
                             <ul class="collapse show remove-style select-elements" id="channels">
                                 <li class="active"><a href="#">general</a></li>

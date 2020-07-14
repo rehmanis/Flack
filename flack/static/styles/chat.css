@@ -15,12 +15,33 @@
 
 #sidebar {
     
-    padding: 2em;
+    /* padding-left: 1.5em;
+    padding-top: 1em; */
     background-color: #386c8a;
     flex: 0 0 25vw;
     color: white;
     
 }
+
+#sidebar li{
+    /* padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 0.3em; */
+    padding: 0.5em;
+    padding-left: 1em   ;
+
+}
+
+/* #sidebar_header h4{
+    padding: 1em;
+    padding-bottom: 0.5em;
+}
+
+
+#sidebar_header {
+
+    border-bottom: 1px solid gray;
+} */
 
 #sidebar li a{
     color: white;
@@ -28,15 +49,21 @@
 }
 
 #sidebar ul li ul{
-   
+   padding: 0.5em;
 }
 
-#sidebar ul li ul li:hover, .active{
+
+
+#sidebar ul li ul li:hover, #add_channel:hover{
     background-color: #6996AD;
 }
 
 #add_channel {
     float: right;
+    border: none;
+    color: white;
+    background-color: #386c8a;
+    border-radius: 30%;
 }
 
 #message_area {
@@ -89,6 +116,10 @@
     border: none;
     color: white;
     opacity: 0.8;
+}
+
+.active {
+    background-color: #20B2AA;
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */

@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
     var currRoom = "general";
+    getMessages(currRoom);
 
     // When user is connected connected, 
     socket.on("connect", () => {
@@ -55,28 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
             if (currRoom != newChannel){
                 currRoom = newChannel;
-
-                const request = new XMLHttpRequest();
-                request.open('POST', '/messages');
-                request.onload = () => {
-                    // Extract JSON data from request
-                    const data = JSON.parse(request.responseText);
-
-                    document.querySelector("#message_section").innerHTML = "";
-
-                    for (var i = 0; i < data.entries.length; i++){
-                        displayMessage(data.entries[i]);
-                    }
-                }
-                
-                // Add data to send with request
-                const data = new FormData();
-                data.append('channel', currRoom);
-    
-                // Send request
-                request.send(data);
-
-                return false;
+                getMessages(currRoom);
             }
         }
     } );
@@ -137,6 +117,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.querySelector("#message_section").append(p);
 
+    }
+
+    function getMessages(room){
+        const request = new XMLHttpRequest();
+        request.open('POST', '/messages');
+        request.onload = () => {
+            // Extract JSON data from request
+            const data = JSON.parse(request.responseText);
+
+            document.querySelector("#message_section").innerHTML = "";
+
+            for (var i = 0; i < data.entries.length; i++){
+                displayMessage(data.entries[i]);
+            }
+        }
+        
+        // Add data to send with request
+        const data = new FormData();
+        data.append('channel', room);
+
+        // Send request
+        request.send(data);
+
+        return false;
     }
 
 });
