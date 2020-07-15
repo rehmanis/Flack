@@ -51,11 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }else{
                 event.target.classList.add("active");
             }
+
+            const roomSelected = (event.target.innerText || event.target.textContent);            
+            document.querySelector("#curr_channel").firstElementChild.innerHTML = "#" + roomSelected;
             
-            let newChannel = event.target.innerText || event.target.textContent;
-        
-            if (currRoom != newChannel){
-                currRoom = newChannel;
+            if (currRoom != roomSelected){
+                currRoom = roomSelected;
                 getMessages(currRoom);
             }
         }

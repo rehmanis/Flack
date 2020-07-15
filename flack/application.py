@@ -7,7 +7,8 @@ from .forms import *
 from .models import *
 from flack import db, app, login_manager, socketio
 
-CHANNELS = ["general", "other"]
+CHANNELS = [channel.name for channel in Channel.query.all()]
+print(f"\n\n{CHANNELS}\n\n")
 ONLINE_USERS = []
 # USERS = [user.username for user in User.query.all()]
 USERS = []
@@ -83,9 +84,6 @@ def message(data):
     msg_date = timestamp.strftime("%D %B, %e")
 
     temp = {"username": data["username"], "msg": data["msg"], "time": msg_time, "date": msg_date}
-    print(f"\n{temp}\n")
-    print(data["room"])
-    print()
 
     send({"username": data["username"], "msg": data["msg"], 
           "time": msg_time, "date": msg_date, "room": data["room"]}, room=data["room"])
@@ -139,9 +137,27 @@ def get_messages():
         entry = {"username": username, "time": msg_time, "date": msg_date, "msg" : msg_obj.message}
         data.append(entry)
 
-    print(f"\n{data}\n")
-
     return jsonify({"entries": data})
+
+
+@app.route("/chat/create_channel", methods=["POST"])
+def create_channel():
+    data = request.get_json()
+    channel_name = data["channel"]
+
+    if not channel_name:
+        return jsonify({"success": False})
+
+    new_channel = Channel(name=channel_name)
+    db.session.add(new_channel)
+    db.session.commit()
+
+    CHANNELS.append(channel_name)
+
+    return jsonify({"success": True})
+
+
+    
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)

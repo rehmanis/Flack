@@ -12,8 +12,40 @@
     flex: 1;
 }
 
+#secondary_nav{
+    
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    max-height: 10vh;
 
-#sidebar {
+}
+
+#primary_nav, #secondary_nav{
+    border-bottom: 1px solid #E8E8E8;
+}
+
+#curr_user_display, #channel_nav {
+    padding: 1em;
+
+}
+
+
+
+#channel_nav, #channel_nav ul {
+    
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+
+#add_users{
+    margin-left: auto;
+}
+
+
+#sidebar, #curr_user_display {
     
     /* padding-left: 1.5em;
     padding-top: 1em; */
@@ -75,7 +107,7 @@
 
 #message_section {
     
-    height: 85vh;
+    min-height: 70vh;
     overflow-y: auto; /*Make  this section scrolable */
     padding: 1em;
     

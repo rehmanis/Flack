@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addChannel = document.querySelector("#add_channel");
     const channels = document.querySelector("#channels");
     sendButton.disabled = true;
+    channels.firstElementChild.classList.add("active");
 
     // Enable send message button only if there is text in the input field
     inputMessage.onkeyup = () => {
@@ -19,31 +20,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    addChannel.onclick = () =>{
 
-        console.log("add Channel");
-        if (!document.querySelector("#new_channel")){
-            const li = document.createElement("li");
-            const input = document.createElement("input");
-            input.autofocus = true;
-            input.type = 'text';
-            input.placeholder = "Channel name..."
-            input.id = "new_channel"
-            input.className += " new-channel"
-            // input.style.background = "#325C74";
-            // input.style.border = "none";
-            // input.style.color = "white";
+    // document.querySelector("#create_channel_form").onsubmit = () => {
+        
+    //     console.log("I am here")
+    //     const channelName = document.querySelector("#new_channel_name").value;
+    //     console.log(channelName);
+    //     const request = new XMLHttpRequest();
+    //     request.open('POST', '/chat/create_channel');
 
+    //     request.onload = () => {
+    //         // Extract JSON data from request
+    //         const data = JSON.parse(request.responseText);
+    //         console.log(data);
+    //         console.log(data.success);
 
-            li.append(input);
-            channels.append(li);
+    //         if(data.success){
 
-            input.addEventListener("keyup", addNewChannel);
+    //             print("success")
 
-        }
+    //             const a = document.createElement("a");
+    //             const li = document.createElement("li");
 
-        return false;
-    };
+    //             a.innerHTML = channelName;
+    //             a.href = "#"
+
+    //             li.append(a);
+    //             channels.append(li);
+                
+    //         }
+    //     }
+        
+    //     // Add data to send with request
+    //     const data = new FormData();
+    //     data.append('channel', channelName);
+
+    //     // Send request
+    //     request.send(data);
+    //     document.querySelector("#createChannelModal").modal('toggle');
+    // }
 
     function addNewChannel(event){
 

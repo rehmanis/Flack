@@ -16,25 +16,25 @@
     <body>
 
         <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="createChannelModal" tabindex="-1" role="dialog" aria-labelledby="createChannelModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Create new channel</h5>
+                  <h5 class="modal-title" id="createChannelModalLabel">Create new channel</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div class="modal-body">
-                    <form>
+                <div class="modal-body" >
+                    <form id="create_channel_form" >
                         <div class="form-group">
-                          <label for="new-channel-name" class="col-form-label">Name:</label>
-                          <input type="text" class="form-control" id="new-channel-name">
+                          <label for="new_channel_name" class="col-form-label">Name:</label>
+                          <input type="text" class="form-control" id="new_channel_name">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="create_channel_btn" class="btn btn-primary">create</button>
                         </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary">create</button>
                 </div>
               </div>
             </div>
@@ -44,12 +44,8 @@
         <!-- BEGIN wrapper -->
         <div class="wrapper">
             <!-- BEGIN Top Nav bar -->
-            <nav class="navbar navbar-expand-sm py-0" style="background-color: #325C74">
+            <nav id="primary_nav" class="navbar navbar-expand-sm p-0" style="background-color: #325C74">
                 <div class="container-fluid">
-                    <!-- <div id="show_sidebar_button" class="cursor_pointer">
-                        <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
-                        <span>Menu</span>
-                    </div> -->
                     <!-- bootstrap toggle button -->
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -63,13 +59,24 @@
             </nav>
             <!-- END Top Nav bar -->
 
-            <nav id="" class="navbar navbar-expand-sm navbar-light">
+            <nav id="secondary_nav" class="">
 
                 <div id="curr_user_display">
                     Team Test
                     <div id="get_username">
                         {{ current_user.username }}
                     </div>
+                </div>
+
+                <div id="channel_nav">
+                    <ul class="navbar-nav">
+                        <li id="curr_channel" class="nav-item">
+                            <a class="nav-link" href="#">#general</a>
+                        </li>
+                        <li class="nav-item" id="add_users">
+                            <a class="nav-link" href="#"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
+                        </li>
+                    </ul>
                 </div>
 
             </nav>
@@ -87,19 +94,14 @@
                                     Channels
                                 </a>
                                 <!-- Button trigger modal -->
-                                <button type="button" id="add_channel" class="ml-auto" data-toggle="modal" data-target="#exampleModal">
+                                <button type="button" id="add_channel" class="ml-auto" data-toggle="modal" data-target="#createChannelModal">
                                     <i class="fa fa-plus-circle aria-hidden="true"></i>
                                 </button>
-                                <!-- <a href="#" id="add_channel" class="ml-auto">
-                                    <i class="fa fa-plus-circle aria-hidden="true"></i>
-                                </a> -->
                             </div>
                             <ul class="collapse show remove-style select-elements" id="channels">
-                                <li class="active"><a href="#">general</a></li>
-                                <li><a href="#">other</a></li>
-                                <!-- {%  for channel in channels %}
+                                {%  for channel in channels %}
                                     <li><a href="#">{{ channel }}</a></li>
-                                {% endfor %} -->
+                                {% endfor %}
                             </ul>
                         </li>
                         <li>
@@ -151,13 +153,16 @@
         <script defer src="{{ url_for('static', filename='scripts/socket.js') }}"></script>
 
         <!-- Bootstrap -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    
+        <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> 
+        
+        <script defer src="{{ url_for('static', filename='scripts/modal.js') }}"></script>
+
         <!-- Font Awesome JS -->
         <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
         <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
-
 
     </body>
 </html>
