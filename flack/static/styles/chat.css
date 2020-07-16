@@ -123,6 +123,10 @@
     list-style: none; 
 } /* Remove default bullets */
 
+#channelHelp {
+    visibility: hidden;
+}
+
 #channels li::before {
     content: "\0023"; /* Unicode bullet symbol */
     color: white;  /* Bullet color */

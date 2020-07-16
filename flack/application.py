@@ -145,12 +145,18 @@ def create_channel():
     data = request.get_json()
     channel_name = data["channel"]
 
-    if not channel_name:
+    print()
+    print(Channel.query.filter_by(name=channel_name).first())
+    print()
+    if Channel.query.filter_by(name=channel_name).first():
         return jsonify({"success": False})
 
     new_channel = Channel(name=channel_name)
     db.session.add(new_channel)
     db.session.commit()
+    
+    join_msg = "Joined" + "#" + channel_name
+    current_user.add_message(msg=join_msg, channel_id=new_channel.id)
 
     CHANNELS.append(channel_name)
 

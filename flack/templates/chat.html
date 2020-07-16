@@ -26,10 +26,13 @@
                   </button>
                 </div>
                 <div class="modal-body" >
-                    <form id="create_channel_form" >
+                    <form class=""" id="create_channel_form">
                         <div class="form-group">
                           <label for="new_channel_name" class="col-form-label">Name:</label>
                           <input type="text" class="form-control" id="new_channel_name">
+                            <small id="channelHelp" class="form-text text-danger">
+                              Channel name is already taken. Please choose another.
+                            </small>      
                         </div>
                         <div class="modal-footer">
                             <button type="submit" id="create_channel_btn" class="btn btn-primary">create</button>
