@@ -7,7 +7,8 @@ from .forms import *
 from .models import *
 from flack import db, app, login_manager, socketio
 
-CHANNELS = [channel.name for channel in Channel.query.all()]
+#CHANNELS = [channel.name for channel in Channel.query.all()]
+CHANNELS = []
 print(f"\n\n{CHANNELS}\n\n")
 ONLINE_USERS = []
 # USERS = [user.username for user in User.query.all()]
@@ -21,7 +22,10 @@ def load_user(user_id):
 @app.route("/chat", methods=["Get"])
 @login_required
 def chat():
-    return render_template("chat.html", users=USERS, channels=CHANNELS)
+    user_channels = [channel.name for channel in current_user.channels]
+    users = [user.username for user in User.query.all()]
+
+    return render_template("chat.html", users=users, channels=user_channels)
 
 @app.route("/", methods=["Get", "Post"])
 def index():
@@ -41,8 +45,13 @@ def index():
         for channel in Channel.query.all():
             join_msg = "Joined" + "#" + channel.name
             new_user.add_message(msg=join_msg, channel_id=channel.id)
+            new_user.channels.append(channel)
+            channel.users.append(new_user)
+
+        db.session.commit()
 
         USERS.append(new_user.username)
+
         flash("Registered successfully! Please Log In", "success")
         return redirect(url_for("login"))
     
@@ -120,17 +129,15 @@ def add_channel(data):
 @app.route("/messages", methods=["POST"])
 def get_messages():
     channel_name = request.form.get("channel") 
-    print(channel_name)
 
     ### not the most efficient way to query.
     ### Need to think about different db design and possibly using db JOIN
 
     channel = Channel.query.filter_by(name=channel_name).first()
-    messages = Message.query.filter_by(channel_id=channel.id)
-
+    # messages = Message.query.filter_by(channel_id=channel.id)
     data = []
 
-    for msg_obj in messages:
+    for msg_obj in channel.messages:
         username = User.query.filter_by(id=msg_obj.user_id).first().username;
         msg_time = msg_obj.timestamp.strftime("%#I:%#M %p")
         msg_date = msg_obj.timestamp.strftime("%D %B, %e")
@@ -145,18 +152,26 @@ def create_channel():
     data = request.get_json()
     channel_name = data["channel"]
 
-    print()
-    print(Channel.query.filter_by(name=channel_name).first())
-    print()
+    # print()
+    # print(Channel.query.filter_by(name=channel_name).first())
+    # print()
     if Channel.query.filter_by(name=channel_name).first():
         return jsonify({"success": False})
 
     new_channel = Channel(name=channel_name)
     db.session.add(new_channel)
+    current_user.channels.append(new_channel)
+    new_channel.users.append(current_user)
     db.session.commit()
     
     join_msg = "Joined" + "#" + channel_name
     current_user.add_message(msg=join_msg, channel_id=new_channel.id)
+
+    chl = [channel.name for channel in current_user.channels]
+    urs = [user.username for user in new_channel.users]
+
+
+    print(f"\n\n{chl}\n\n{urs}\n\n")
 
     CHANNELS.append(channel_name)
 

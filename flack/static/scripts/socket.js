@@ -41,6 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     channels.addEventListener("click", event => {
 
+        console.log("channel clicked");
+        console.log(event.target);
+
         if (event.target && (event.target.nodeName == "A" || event.target.nodeName == "LI")){
 
             let activeChannel = document.querySelector("li.active");
