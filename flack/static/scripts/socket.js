@@ -2,8 +2,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-    var currRoom = "general";
-    getMessages(currRoom);
+    // var activeChannelUsers = localStorage.getItem("activeChannelUsers");
+    const channels = document.querySelector("#channels");
+    const sendButton = document.querySelector("#send_message");
+    var activeChannelName = localStorage.getItem("activeChannelName");
+
+    if(!activeChannelName){
+        channels.firstElementChild.classList.add("active");
+        localStorage.setItem("activeChannelName", document.querySelector("li.active a").innerHTML);
+        activeChannelName = localStorage.getItem("activeChannelName");
+    }else{
+        document.querySelector("#" + activeChannelName).classList.add("active");
+    }
+
+    document.querySelector("#curr_channel").firstElementChild.innerHTML = "#" + activeChannelName;
+    getMessages(activeChannelName);
 
     // When user is connected connected, 
     socket.on("connect", () => {
@@ -14,30 +27,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     socket.on("message", data => {
         console.log("message received");
-        if (currRoom === data.room){
+        if (activeChannelName === data.room){
             displayMessage(data);
         }else{
             // add a bubble next to channel to indicate unread message in visible
             // channels
         }
 
-
     });
-
-    // get the send button and disable it 
-    const sendButton = document.querySelector("#send_message");
 
     sendButton.onclick = () =>{
 
-        console.log(currRoom)
+        console.log(activeChannelName)
         const inputMessage = document.querySelector("#user_message");
-        socket.send({"username": username, "room": currRoom, "msg" : inputMessage.value});
+        socket.send({"username": username, "room": activeChannelName, "msg" : inputMessage.value});
         inputMessage.value = "";
         sendButton.disabled = true;
     };
 
-
-    const channels = document.querySelector("#channels");
 
     channels.addEventListener("click", event => {
 
@@ -55,13 +62,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 event.target.classList.add("active");
             }
 
-            const roomSelected = (event.target.innerText || event.target.textContent);            
-            document.querySelector("#curr_channel").firstElementChild.innerHTML = "#" + roomSelected;
+            activeChannelName = localStorage.getItem("activeChannelName");
+            channelSelected = (event.target.innerText || event.target.textContent);    
             
-            if (currRoom != roomSelected){
-                currRoom = roomSelected;
-                getMessages(currRoom);
+            if (activeChannelName != channelSelected){
+                console.log(activeChannelName);
+                localStorage.setItem("activeChannelName", channelSelected);        
+                document.querySelector("#curr_channel").firstElementChild.innerHTML = "#" + channelSelected;
+                getMessages(channelSelected);
+                activeChannelName = channelSelected;
             }
+
+            document.querySelector("#user_message").focus();
         }
     } );
 
@@ -135,6 +147,19 @@ document.addEventListener('DOMContentLoaded', () => {
             for (var i = 0; i < data.entries.length; i++){
                 displayMessage(data.entries[i]);
             }
+
+            // update the number of users in this channel
+            currUsers = data.users;
+            console.log(data.users);
+            console.log(data.users.length);
+            // console.log('ID : ' + $('#num_users a').html());
+            // $('#num_users a').data('title', 'hello');
+
+            $("#num_users a").mouseenter(function(){
+   
+                $("#num_users a").attr('data-original-title','the new text you want');
+            });
+
         }
         
         // Add data to send with request

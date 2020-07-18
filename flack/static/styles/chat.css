@@ -30,8 +30,6 @@
 
 }
 
-
-
 #channel_nav, #channel_nav ul {
     
     display: flex;
@@ -39,9 +37,22 @@
     flex: 1;
 }
 
+#channel_nav ul{
+    justify-content: space-between;
+}
+#curr_channel {
+    flex: 1;
+    /* flex-basis: 500px;
+    flex-grow: 1;
+    flex-shrink: 1; */
+}
 
-#add_users{
-    margin-left: auto;
+
+#num_users, #add_users {
+    flex: 0 0 4vw;
+    text-align: center;
+
+
 }
 
 

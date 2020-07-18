@@ -119,12 +119,26 @@ def on_connect(data):
     current_user.sid = request.sid;
     db.session.commit()
 
-    for room in CHANNELS:
-        join_room(room)
+    #print(f"\n\n {current_user.channels")
+
+    for channel in current_user.channels:
+        join_room(channel.name)
 
 @socketio.on("add channel")
 def add_channel(data):
     pass
+
+@app.route("/users", methods=["POST"])
+def get_users():
+    data = request.get_json()
+    channel_name = data["channel"]
+    channel = Channel.query.filter_by(name=channel_name).first()
+    users = [user.username for user in channel.users]
+
+    return jsonify({"users": users})
+
+
+
 
 @app.route("/messages", methods=["POST"])
 def get_messages():
@@ -135,16 +149,19 @@ def get_messages():
 
     channel = Channel.query.filter_by(name=channel_name).first()
     # messages = Message.query.filter_by(channel_id=channel.id)
-    data = []
+    entries = []
 
     for msg_obj in channel.messages:
-        username = User.query.filter_by(id=msg_obj.user_id).first().username;
+        # username = User.query.filter_by(id=msg_obj.user_id).first().username;
+        username = msg_obj.user.username;
         msg_time = msg_obj.timestamp.strftime("%#I:%#M %p")
         msg_date = msg_obj.timestamp.strftime("%D %B, %e")
         entry = {"username": username, "time": msg_time, "date": msg_date, "msg" : msg_obj.message}
-        data.append(entry)
+        entries.append(entry)
 
-    return jsonify({"entries": data})
+    users = [user.username for user in channel.users]
+
+    return jsonify({"entries": entries, "users": users})
 
 
 @app.route("/chat/create_channel", methods=["POST"])

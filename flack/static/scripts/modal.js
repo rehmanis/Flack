@@ -1,6 +1,18 @@
 $(window).on("load", function() {
 
+    $('[data-toggle="tooltip"]').tooltip()
+
     var channelCreated = false;
+    // var activeChannel = localStorage.getItem("activeChannel");
+    
+    // if(!activeChannel){
+    //     $("#channels").firstElementChild.classList.add("active");
+    //     activeChannel = localStorage.setItem("activeChannel", $(".active").value);
+    //     console.log(activeChannel);
+    // }
+
+
+
     
     $('#create_channel_form').on('submit', function(e){
         e.preventDefault();
@@ -13,7 +25,7 @@ $(window).on("load", function() {
             dataType: "json",
             success: function(data){
                 if(data.success){
-                    
+
                     var newItem = "<li><a href='#'>" + value + "</a></li>";
                     $('#channels').append(newItem);
                     $('#createChannelModal').modal('hide');
