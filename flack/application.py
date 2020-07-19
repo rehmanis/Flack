@@ -24,6 +24,7 @@ def load_user(user_id):
 def chat():
     user_channels = [channel.name for channel in current_user.channels]
     users = [user.username for user in User.query.all()]
+    print(f"\n\n{users}\n\n")
 
     return render_template("chat.html", users=users, channels=user_channels)
 
@@ -42,7 +43,7 @@ def index():
         db.session.add(new_user)
         db.session.commit()
 
-        for channel in Channel.query.all():
+        for channel in Channel.query.filter_by(is_private=False):
             join_msg = "Joined" + "#" + channel.name
             new_user.add_message(msg=join_msg, channel_id=channel.id)
             new_user.channels.append(channel)

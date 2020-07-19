@@ -40,6 +40,7 @@ class Channel(db.Model):
     __tablename__ = "channels"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), unique=True, nullable=False)
+    is_private = db.Column(db.Boolean, default=True, nullable=False)
     messages = db.relationship("Message", backref=db.backref("channel", lazy=True))
 
 

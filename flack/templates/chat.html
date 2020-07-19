@@ -76,9 +76,10 @@
                             <a class="nav-link" href="#"></a>
                         </li>
                         <li class="nav-item" id="num_users">
-                            <a class="nav-link" href="#" data-toggle="tooltip" data-placement="bottom" title="Content">
+                            <a class="nav-link" href="#" data-toggle="tooltip" data-placement="bottom" title="">
                                 <i class="fa fa-user" aria-hidden="true"></i>
-                            </a>
+                                <span>{{ users | length }}</span>
+                            </a>    
                         </li>  
                         <li class="nav-item" id="add_users">
                             <a class="nav-link" href="#"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
@@ -146,11 +147,12 @@
         </div>
         <!-- END wrapper -->
 
+        <meta id="get_all_users" data-users="{{users |tojson |forceescape}}">
+
         <script>
             const username = `{{ current_user.username }}`;
-            const users = '{{ users }}';
-            console.log(users)
-            
+            // const users = '{{ users }}';
+            // console.log(users)
         </script>
         
         <!-- SocketIO JS Library -->

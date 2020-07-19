@@ -1,18 +1,10 @@
-$(window).on("load", function() {
+$(document).ready(function() {
 
-    $('[data-toggle="tooltip"]').tooltip()
-
-    var channelCreated = false;
-    // var activeChannel = localStorage.getItem("activeChannel");
+    $('[data-toggle="tooltip"]').tooltip({
+        html: true
+    })
     
-    // if(!activeChannel){
-    //     $("#channels").firstElementChild.classList.add("active");
-    //     activeChannel = localStorage.setItem("activeChannel", $(".active").value);
-    //     console.log(activeChannel);
-    // }
-
-
-
+    var channelCreated = false;
     
     $('#create_channel_form').on('submit', function(e){
         e.preventDefault();
@@ -55,5 +47,31 @@ $(window).on("load", function() {
         }
 
     });
+
+    $(document).on({
+        'mouseenter': function (e) {
+            const text = getUsersInChannel();
+            $("#num_users a").attr('data-original-title', text);
+            $(this).tooltip('show');
+        },
+            'mouseeleave': function (e) {
+            $(this).tooltip('hide');
+        }
+    }, '#num_users a');
+
+
+    function getUsersInChannel(){
+        const users = JSON.parse(localStorage.getItem("activeChannelUsers"));
+        let text = "<p>This channel has users:"
+        
+        for (var i = 0; i < users.length; i++){
+            text += "<br>" + users[i]
+        }
+
+        text += '<\p>';
+        return text;
+
+    }
+
 
 });

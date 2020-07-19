@@ -2,17 +2,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-    // var activeChannelUsers = localStorage.getItem("activeChannelUsers");
     const channels = document.querySelector("#channels");
     const sendButton = document.querySelector("#send_message");
     var activeChannelName = localStorage.getItem("activeChannelName");
+    var activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers"));
 
     if(!activeChannelName){
+
+        const users = $("#get_all_users").data("users");
         channels.firstElementChild.classList.add("active");
         localStorage.setItem("activeChannelName", document.querySelector("li.active a").innerHTML);
+        localStorage.setItem("activeChannelUsers", JSON.stringify(users));        
         activeChannelName = localStorage.getItem("activeChannelName");
+        activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers"));
+
     }else{
         document.querySelector("#" + activeChannelName).classList.add("active");
+        document.querySelector("#num_users a span").innerHTML = activeChannelUsers.length;
     }
 
     document.querySelector("#curr_channel").firstElementChild.innerHTML = "#" + activeChannelName;
@@ -148,17 +154,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 displayMessage(data.entries[i]);
             }
 
-            // update the number of users in this channel
-            currUsers = data.users;
-            console.log(data.users);
-            console.log(data.users.length);
-            // console.log('ID : ' + $('#num_users a').html());
-            // $('#num_users a').data('title', 'hello');
-
-            $("#num_users a").mouseenter(function(){
-   
-                $("#num_users a").attr('data-original-title','the new text you want');
-            });
+            localStorage.setItem("activeChannelUsers", JSON.stringify(data.users));
+            activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers"));
+            document.querySelector("#num_users a span").innerHTML = activeChannelUsers.length;
 
         }
         
