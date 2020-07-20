@@ -9,13 +9,13 @@
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
         <!-- Custom css for chat pages -->
         <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/chat.css')}}">
     </head>
     <body>
 
-        <!-- Modal -->
+        <!-- Modal Adding Channels START -->
         <div class="modal fade" id="createChannelModal" tabindex="-1" role="dialog" aria-labelledby="createChannelModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
@@ -26,7 +26,7 @@
                   </button>
                 </div>
                 <div class="modal-body" >
-                    <form class=""" id="create_channel_form">
+                    <form class="" id="create_channel_form">
                         <div class="form-group">
                           <label for="new_channel_name" class="col-form-label">Name:</label>
                           <input type="text" class="form-control" id="new_channel_name">
@@ -42,6 +42,32 @@
               </div>
             </div>
         </div>
+        <!-- Modal Adding Channels END -->
+
+        <!-- Modal adding users to channels START -->
+        <div class="modal fade" id="addUsersModal" tabindex="-1" role="dialog" aria-labelledby="addUsersModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addUsersModalLabel">Add Users</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" >
+                        <form class="" id="add_users_form">
+                            <div class="form-group">
+                                <select id="users_to_add_selected" class="selectpicker" multiple data-live-search="true"></select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="" class="btn btn-primary">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal adding users to channels END -->
           
 
         <!-- BEGIN wrapper -->
@@ -78,11 +104,17 @@
                         <li class="nav-item" id="num_users">
                             <a class="nav-link" href="#" data-toggle="tooltip" data-placement="bottom" title="">
                                 <i class="fa fa-user" aria-hidden="true"></i>
-                                <span>{{ users | length }}</span>
+                                <span></span>
                             </a>    
                         </li>  
                         <li class="nav-item" id="add_users">
-                            <a class="nav-link" href="#"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
+                            <span data-toggle="modal" data-target="#addUsersModal">
+                                <span id="add_users_btn_wrapper" data-toggle="tooltip" data-placement="bottom" title="Click to add users">
+                                    <button id="add_users_btn" type="button" class="nav-link" >
+                                        <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                    </button>
+                                </span>
+                            </span>
                         </li>
               
                     </ul>
@@ -164,7 +196,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> 
-        
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+
         <script defer src="{{ url_for('static', filename='scripts/modal.js') }}"></script>
         <!-- our custom chat JS -->
         <script defer src="{{ url_for('static', filename='scripts/chat.js') }}"></script>

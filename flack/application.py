@@ -129,14 +129,14 @@ def on_connect(data):
 def add_channel(data):
     pass
 
-@app.route("/users", methods=["POST"])
-def get_users():
-    data = request.get_json()
-    channel_name = data["channel"]
-    channel = Channel.query.filter_by(name=channel_name).first()
-    users = [user.username for user in channel.users]
+# @app.route("/users", methods=["POST"])
+# def get_users():
+#     data = request.get_json()
+#     channel_name = data["channel"]
+#     channel = Channel.query.filter_by(name=channel_name).first()
+#     users = [user.username for user in channel.users]
 
-    return jsonify({"users": users})
+#     return jsonify({"users": users})
 
 
 
@@ -165,14 +165,40 @@ def get_messages():
     return jsonify({"entries": entries, "users": users})
 
 
+@app.route("/chat/add_users", methods=["POST"])
+def add_users():
+    data = request.get_json()
+    print(f"\n\n{data}\n\n")
+
+    usernames_to_add = data["users"]
+    new_channel = Channel.query.filter_by(name=data["channel"]).first()
+
+    for username in usernames_to_add:
+        print(f"\n\n username: {username} \n\n")
+        # find the user with this username in the db
+        user = User.query.filter_by(username=username).first()
+        # add the channel to this users channel list
+        user.channels.append(new_channel)
+        # add this new channel to the desired channel's users list
+        new_channel.users.append(user)
+        join_msg = "Joined" + "#" + new_channel.name
+        user.add_message(msg=join_msg, channel_id=new_channel.id)
+
+        chl = [channel.name for channel in user.channels]
+        urs = [user.username for user in new_channel.users]
+        
+        print(f"\nAll channels: {chl} \n")
+        print(f"\nAll users: {urs} \n")
+
+    db.session.commit()
+
+    return jsonify({"success": True})
+
 @app.route("/chat/create_channel", methods=["POST"])
 def create_channel():
     data = request.get_json()
     channel_name = data["channel"]
 
-    # print()
-    # print(Channel.query.filter_by(name=channel_name).first())
-    # print()
     if Channel.query.filter_by(name=channel_name).first():
         return jsonify({"success": False})
 

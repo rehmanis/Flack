@@ -49,7 +49,7 @@
 
 
 #num_users, #add_users {
-    flex: 0 0 4vw;
+    flex: 0 0 6vw;
     text-align: center;
 
 
@@ -109,21 +109,29 @@
     border-radius: 30%;
 }
 
+#add_users button {
+    border: none;
+    background-color: white;
+    border-radius: 30%;
+}
+
 #message_area {
     
     flex: 1;
-    
 }
 
 
 #message_section {
     
-    min-height: 70vh;
+    min-height: 72vh;
     overflow-y: auto; /*Make  this section scrolable */
     padding: 1em;
     
-    
 }
+
+/* #message_section p{
+    vertical-align: bottom;
+} */
 
 #input_section {
     padding: 1em;
@@ -144,6 +152,13 @@
 	
 	/* Optional tweaks */
 
+}
+
+
+
+#add_users_btn_wrapper  .btn[disabled] {
+    /* don't let button block mouse events from reaching wrapper */
+    pointer-events: none;
 }
 
 

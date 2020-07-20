@@ -6,10 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendButton = document.querySelector("#send_message");
     var activeChannelName = localStorage.getItem("activeChannelName");
     var activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers"));
+    const users = $("#get_all_users").data("users");
+
+    console.log(activeChannelUsers);
+
 
     if(!activeChannelName){
 
-        const users = $("#get_all_users").data("users");
         channels.firstElementChild.classList.add("active");
         localStorage.setItem("activeChannelName", document.querySelector("li.active a").innerHTML);
         localStorage.setItem("activeChannelUsers", JSON.stringify(users));        
@@ -17,9 +20,25 @@ document.addEventListener('DOMContentLoaded', () => {
         activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers"));
 
     }else{
+        console.log("else ");
+        console.log(activeChannelUsers);
         document.querySelector("#" + activeChannelName).classList.add("active");
+
         document.querySelector("#num_users a span").innerHTML = activeChannelUsers.length;
     }
+
+    if (!updateUsersToAdd()){
+
+        document.querySelector("#add_users span").disabled = true;
+        document.querySelector("#add_users_btn").disabled = true;
+        $("#add_users_btn_wrapper").attr('data-original-title', "All users already in this channel");
+    }else{
+
+        document.querySelector("#add_users span").disabled = false;
+        document.querySelector("#add_users_btn").disabled = false;
+        $("#add_users_btn_wrapper").attr('data-original-title', "Click to add users");
+    }
+
 
     document.querySelector("#curr_channel").firstElementChild.innerHTML = "#" + activeChannelName;
     getMessages(activeChannelName);
@@ -54,8 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     channels.addEventListener("click", event => {
 
-        console.log("channel clicked");
-        console.log(event.target);
+        // console.log("channel clicked");
+        // console.log(event.target);
 
         if (event.target && (event.target.nodeName == "A" || event.target.nodeName == "LI")){
 
@@ -77,11 +96,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector("#curr_channel").firstElementChild.innerHTML = "#" + channelSelected;
                 getMessages(channelSelected);
                 activeChannelName = channelSelected;
+
             }
 
             document.querySelector("#user_message").focus();
         }
-    } );
+
+    });
 
     // repeat code need to combine remove this later
     document.querySelector("#usersList").addEventListener("click", event => {
@@ -141,6 +162,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+    function updateUsersToAdd(){
+
+        var isUpdated = false;
+        document.querySelector("#users_to_add_selected").innerHTML = "";
+
+        for (var i = 0; i < users.length; i++){
+
+            if (!activeChannelUsers.includes(users[i])){
+                let option = document.createElement("option");
+                option.innerHTML = users[i];
+                document.querySelector("#users_to_add_selected").append(option);
+                isUpdated = true;
+                $('#users_to_add_selected').selectpicker('refresh');
+            }
+        }
+        
+        return isUpdated;
+    }
+
     function getMessages(room){
         const request = new XMLHttpRequest();
         request.open('POST', '/messages');
@@ -156,7 +196,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             localStorage.setItem("activeChannelUsers", JSON.stringify(data.users));
             activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers"));
+
             document.querySelector("#num_users a span").innerHTML = activeChannelUsers.length;
+
+            if (!updateUsersToAdd()){
+
+                document.querySelector("#add_users span").disabled = true;
+                document.querySelector("#add_users_btn").disabled = true;
+                $("#add_users_btn_wrapper").attr('data-original-title', "All users already in this channel");
+            }else{
+
+                document.querySelector("#add_users span").disabled = false;
+                document.querySelector("#add_users_btn").disabled = false;
+                $("#add_users_btn_wrapper").attr('data-original-title', "Click to add users");
+            }
 
         }
         
