@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
 
     $('[data-toggle="tooltip"]').tooltip({
@@ -54,20 +55,7 @@ $(document).ready(function() {
                     var activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers"));
                     localStorage.setItem("activeChannelUsers", JSON.stringify(activeChannelUsers.concat(selected_users)));
                     $("#num_users a span").html(currUsers);
-
-                    if (!updateUsersToAdd()){
-
-                        document.querySelector("#add_users span").disabled = true;
-                        document.querySelector("#add_users_btn").disabled = true;
-                        $("#add_users_btn_wrapper").attr('data-original-title', "All users already in this channel");
-                    }else{
-        
-                        document.querySelector("#add_users span").disabled = false;
-                        document.querySelector("#add_users_btn").disabled = false;
-                        $("#add_users_btn_wrapper").attr('data-original-title', "Click to add users");
-                    }
-
-
+                    updateUserTooltip();
                     $('#addUsersModal').modal('hide');
     
                 }else{
@@ -105,42 +93,6 @@ $(document).ready(function() {
             $(this).tooltip('hide');
         }
     }, '#num_users a');
-
-
-    function getUsersInChannel(){
-        const users = JSON.parse(localStorage.getItem("activeChannelUsers"));
-        let text = "<p>This channel has users:"
-        
-        for (var i = 0; i < users.length; i++){
-            text += "<br>" + users[i]
-        }
-
-        text += '<\p>';
-        return text;
-
-    }
-
-    // copied the same function from socket.js. Need to create a common js file to share functions
-    function updateUsersToAdd(){
-
-        const users = $("#get_all_users").data("users");
-        const activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers"));
-        var isUpdated = false;
-        document.querySelector("#users_to_add_selected").innerHTML = "";
-
-        for (var i = 0; i < users.length; i++){
-
-            if (!activeChannelUsers.includes(users[i])){
-                let option = document.createElement("option");
-                option.innerHTML = users[i];
-                document.querySelector("#users_to_add_selected").append(option);
-                isUpdated = true;
-                $('#users_to_add_selected').selectpicker('refresh');
-            }
-        }
-        
-        return isUpdated;
-    }
 
 
 });
