@@ -141,7 +141,16 @@
                             </div>
                             <ul class="collapse show remove-style select-elements" id="channels">
                                 {%  for channel in current_user.channels %}
-                                    <li id="{{channel.name}}"><a href="#">{{ channel.name }}</a></li>
+                                    {% if channel.name == 'general' %}
+                                        <li id="{{channel.name}}"><a href="#">{{channel.name}}</a></li>
+                                    {% else %}
+                                        <li id="{{channel.name}}"><a href="#">{{channel.name}}</a>
+                                            <button type="button" class="remove-channel-btn ml-auto">
+                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                            </button>
+                                        </li>
+                                    {% endif %}
+                                    
                                 {% endfor %}
                             </ul>
                         </li>
@@ -168,7 +177,7 @@
                     <!-- Send messages -->
                     <div id="input_section" class="input-group mb-3">
                         <input type="text" id="user_message" class="form-control" placeholder="Type here..." aria-label="Type message here" autofocus autocomplete="off">
-                        <button id="send_message" class="btn btn-dark" type="button" > Send </button>
+                        <button id="send_message" class="btn btn-dark" type="button"> Send </button>
                     </div>
                 </div>
                 <!-- End Message area-->

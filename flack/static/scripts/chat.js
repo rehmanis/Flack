@@ -18,6 +18,7 @@ $(document).ready(function() {
     document.querySelector("#curr_channel").firstElementChild.innerHTML = "#" + activeChannelName;
     // make an ajax request to get the channel messages and current users in this channel and
     // update the display accordingly
+    console.log(activeChannelName);
     getMessages(activeChannelName);
     // since nothing is typed this moment, make sure to prevent sending message
     sendButton.disabled = true;
@@ -68,7 +69,10 @@ $(document).ready(function() {
             }
 
             activeChannelName = localStorage.getItem("activeChannelName");
-            channelSelected = (event.target.innerText || event.target.textContent);    
+            channelSelected = (event.target.innerText || event.target.textContent);
+            console.log(channelSelected);
+            console.log(channelSelected.length);
+
             
             if (activeChannelName != channelSelected){
                 console.log(activeChannelName);
@@ -84,14 +88,22 @@ $(document).ready(function() {
 
     });
 
+
+
     // if active channel name or channel users have not yet being stored (i.e first time running the script)
     // set it to the first channel in list of channels (the channel "#general")
     // else set the active channel from the stored one and update the count of users in this channel
     function updateChannelDisplay() {
 
+        console.log(activeChannelName);
+        const active = activeChannelName;
+        console.log(active);
+        // console.log($('#'+active))
+        console.log($("#" + activeChannelName));
+
         if (!activeChannelName || !activeChannelUsers){
 
-            $("#channels").firstElementChild.classList.add("active");
+            $("#channels").children(":first").addClass("active");
             localStorage.setItem("activeChannelName", $("li.active a").html());
             activeChannelName = localStorage.getItem("activeChannelName");
             localStorage.setItem("activeChannelUsers", JSON.stringify(users));
@@ -99,7 +111,9 @@ $(document).ready(function() {
             
         }else{
 
-            $("#" + activeChannelName).addClass("active");    
+            // console.log(("#" + activeChannelName));
+            // console.log($("#" + activeChannelName));
+            $(active).addClass("active");    
             $("#num_users a span").html(activeChannelUsers.length);
         }
 
@@ -127,33 +141,65 @@ $(document).ready(function() {
     }
 
     function getMessages(channel){
-        const request = new XMLHttpRequest();
-        request.open('POST', '/messages');
-        request.onload = () => {
-            // Extract JSON data from request
-            const data = JSON.parse(request.responseText);
 
-            document.querySelector("#message_section").innerHTML = "";
+        $.ajax({
+            url: 'messages',
+            type: 'POST',
+            data: JSON.stringify({ "channel" : channel } ),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
 
-            for (var i = 0; i < data.entries.length; i++){
-                displayMessage(data.entries[i]);
+            success: function(data){
+                if(data.success){
+                    $("#message_section").html("");
+
+                    for (var i = 0; i < data.entries.length; i++){
+                        displayMessage(data.entries[i]);
+                        console.log(data.entries[i]);
+                    }
+
+                    localStorage.setItem("activeChannelUsers", JSON.stringify(data.users));
+                    activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers"));
+                    $("#num_users a span").html(activeChannelUsers.length);
+                    updateUserTooltip();
+    
+                }else{
+
+                    console.log('ERROR');
+
+                }
+
             }
+        });
+        
+        // const request = new XMLHttpRequest();
+        // request.open('POST', '/messages');
+        // request.onload = () => {
+        //     // Extract JSON data from request
+        //     const data = JSON.parse(request.responseText);
+        //     console.log(data);
 
-            localStorage.setItem("activeChannelUsers", JSON.stringify(data.users));
-            activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers"));
-            document.querySelector("#num_users a span").innerHTML = activeChannelUsers.length;
-            updateUserTooltip();
+        //     document.querySelector("#message_section").innerHTML = "";
 
-        }
+        //     for (var i = 0; i < data.entries.length; i++){
+        //         displayMessage(data.entries[i]);
+        //     }
+
+        //     localStorage.setItem("activeChannelUsers", JSON.stringify(data.users));
+        //     activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers"));
+        //     document.querySelector("#num_users a span").innerHTML = activeChannelUsers.length;
+        //     updateUserTooltip();
+
+        // }
         
         // Add data to send with request
-        const data = new FormData();
-        data.append('channel', channel);
+        // const data = new FormData();
+        // data.append('channel', channel);
 
-        // Send request
-        request.send(data);
+        // // Send request
+        // request.send(data);
 
-        return false;
+        // return false;
     }
 
 });

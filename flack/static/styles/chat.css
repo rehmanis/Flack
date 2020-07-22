@@ -101,13 +101,24 @@
     background-color: #6996AD;
 }
 
-#add_channel {
+#add_channel, .remove-channel-btn {
     float: right;
     border: none;
     color: white;
     background-color: #386c8a;
     border-radius: 30%;
 }
+
+#channels li:hover button{
+    background-color: #6996AD;
+
+}
+
+/* #channels li:hover button,i {
+    visibility: visible;
+} */
+
+
 
 #add_users button {
     border: none;

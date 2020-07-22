@@ -84,15 +84,41 @@ $(document).ready(function() {
     });
 
     $(document).on({
+
         'mouseenter': function (e) {
             const text = getUsersInChannel();
             $("#num_users a").attr('data-original-title', text);
             $(this).tooltip('show');
         },
-            'mouseeleave': function (e) {
+
+        'mouseeleave': function (e) {
             $(this).tooltip('hide');
         }
+
     }, '#num_users a');
+
+
+
+    // $(".remove-channel-btn").hide();
+    // $(".remove-channel-btn").children().hide();
+
+    $(document).on({
+
+        'mouseenter': function (e) {
+            console.log("mouse over enter")
+            // console.log($(this).html());
+            // console.log($(this).children("button"))
+            // console.log($(".remove-channel-btn i"));
+            // $(this).children().show();
+        },
+
+        'mouseeleave': function (e) {
+            console.log("mouse over leave")
+            // $(this).children().hide();
+            //$(".remove-channel-btn i").css("visibility", "hidden");
+        }
+
+    }, '#channels li');
 
 
 });

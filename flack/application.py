@@ -143,12 +143,20 @@ def add_channel(data):
 
 @app.route("/messages", methods=["POST"])
 def get_messages():
-    channel_name = request.form.get("channel") 
+    data = request.get_json()
+    channel_name = data["channel"] 
+    print()
+    print(len(channel_name))
+    print(f"\n\n{channel_name}\n\n");
 
     ### not the most efficient way to query.
     ### Need to think about different db design and possibly using db JOIN
 
     channel = Channel.query.filter_by(name=channel_name).first()
+    print(f"\n")
+    print(f'\nchannel found: {channel}\n')
+    msg = [msg.message for msg in channel.messages]
+    print(f"\n\n{msg}\n\n");
     # messages = Message.query.filter_by(channel_id=channel.id)
     entries = []
 
@@ -162,7 +170,7 @@ def get_messages():
 
     users = [user.username for user in channel.users]
 
-    return jsonify({"entries": entries, "users": users})
+    return jsonify({"entries": entries, "users": users, "success": True})
 
 
 @app.route("/chat/add_users", methods=["POST"])
