@@ -5,8 +5,7 @@ $(document).ready(function() {
     var activeChannelName = localStorage.getItem("activeChannelName");
     var activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers"));
     const sendButton = $("#send_message");
-    const inputMessage = $("#user_message");
-    const newChannelName = $("#new_channel_name");
+    
     const users = $("#get_all_users").data("users");
 
 
@@ -24,30 +23,48 @@ $(document).ready(function() {
     sendButton.disabled = true;
 
     // allow enter to result in sending message only if the typed message is not empty
-    inputMessage.onkeyup = () => {
+    $("#user_message").on("keyup", function(event){
+        const inputMessage = $("#user_message");
     
-        if (inputMessage.value.length > 0)
-            sendButton.disabled = false;
-        else
-            sendButton.disabled = true;
+        if (inputMessage.val().length > 0){
+            $("#send_message").prop('disabled', false);
+        }else{
+            $("#send_message").prop('disabled', true);
+        }
 
-        if (inputMessage.value.length > 0 && event.keyCode === 13){
+        if (inputMessage.val().length > 0 && event.keyCode === 13){
             sendButton.click();
         }
-    };
+    });
+    // inputMessage.onkeyup = () => {
+    //     console.log("here");
+    
+    //     if (inputMessage.value.length > 0){
+    //         sendButton.disabled = false;
+    //         console.log("false");
+    //     }else{
+    //         sendButton.disabled = true;
+    //         console.log("true");
+    //     }
+
+    //     if (inputMessage.value.length > 0 && event.keyCode === 13){
+    //         console.log("entered")
+    //         sendButton.click();
+    //     }
+    // };
 
     // 
-    newChannelName.onkeyup = () => {
 
-        if (newChannelName.value.length > 0){
-            createChannelBtn.disabled = false;
-            const warningMessgae = document.querySelector('#channelHelp');
-            warningMessgae.style.visibility = "hidden";
+    $("#new_channel_name").on("keyup", function(event){
+
+        if ($("#new_channel_name").val().length > 0){
+            $("#create_channel_btn").prop('disabled', false);
+            $('#channelHelp').css("visibility", "hidden");
 
         }else{
-            createChannelBtn.disabled = true;
+            $("#create_channel_btn").prop('disabled', true);
         }
-    }
+    });
 
 
 
@@ -70,10 +87,10 @@ $(document).ready(function() {
 
             if (event.target.id == "leave"){
 
-                leaveChannel(parentElem.data("channel"));
+                leaveChannel(parentElem.data("channel"), false);
                 // ajax request to leave the group
             }else if (event.target.id == "delete"){
-
+                leaveChannel(parentElem.data("channel"), true);
             }else{
 
                 let activeChannel = document.querySelector("li.active");
@@ -136,31 +153,13 @@ $(document).ready(function() {
     }
 
 
-    // create the appropriate html to display the message based on the dictionary data
-    function displayMessage(data){ 
 
-        const p = document.createElement("p");
-        const br = document.createElement("br");
-        
-        const span_time = document.createElement("span");
-        const span_username = document.createElement("span");
-        const span_date = document.createElement("span");
-        span_username.innerHTML = data.username;
-        span_time.innerHTML = data.time;
-        span_date.innerHTML = data.date;
-        span_time.className += " time";
-        span_username.className += " username";
-        p.innerHTML = span_username.outerHTML + " " + span_time.outerHTML + br.outerHTML + data.msg;
 
-        document.querySelector("#message_section").append(p);
-
-    }
-
-    function leaveChannel(channel){
+    function leaveChannel(channel, isToBeDeleted){
         $.ajax({
             url: 'chat/leave_channel',
             type: 'POST',
-            data: JSON.stringify({ "channel" : channel } ),
+            data: JSON.stringify({"channel": channel, "isToBeDeleted": isToBeDeleted}),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
 
@@ -169,23 +168,24 @@ $(document).ready(function() {
                     if (activeChannelName === data.channel){
                         $("#" + data.channel).removeClass("active");
                         const nextChannel = $("#" + data.channel).next()
-                        console.log(nextChannel);
-                        console.log(nextChannel.html());
-                        console.log(($.isEmptyObject(nextChannel)));
-                        console.log($("#" + data.channel).prev());
+                        // console.log(nextChannel);
+                        // console.log(nextChannel.html());
+                        // console.log(($.isEmptyObject(nextChannel)));
+                        // console.log($("#" + data.channel).prev());
                         const nextActiveChannel = (nextChannel.length === 0) ? $("#" + data.channel).prev() : nextChannel;
-                        console.log(nextActiveChannel);
+                        // console.log(nextActiveChannel);
                         localStorage.setItem("activeChannelName", nextActiveChannel.children("a").html());
                         activeChannelName =  localStorage.getItem("activeChannelName");
                         $($("#" + activeChannelName)).addClass("active"); 
-                        console.log(activeChannelName);
+                        // console.log(activeChannelName);
 
                         // delete the channel from 
                         $("#" + data.channel).remove();
 
+                        $("#curr_channel a").html("#" + activeChannelName);
+                        getMessages(activeChannelName);
+
                         // send a user left event to other users in the channel
-
-
 
                     }
                     

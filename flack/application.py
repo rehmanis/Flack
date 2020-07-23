@@ -231,7 +231,7 @@ def create_channel():
 
 
 @app.route("/chat/leave_channel", methods=["POST"])
-def leave_channel():
+def delete_channel():
     data = request.get_json()
 
     channel_leave = Channel.query.filter_by(name= data["channel"]).first()
@@ -242,18 +242,53 @@ def leave_channel():
     urs = [user.username for user in channel_leave.users]
     print(f"before removing: {urs}\n")
 
-    channel_leave.users.remove(current_user)
+    if data["isToBeDeleted"]:
+        print(f"\ndeleting......\n")
+        db.session.delete(channel_leave)
+        db.session.commit()
+    else:
+        chl = [channel.name for channel in current_user.channels]
+        print(f"\n..........channels before leaving {chl}..........\n")
+        channel_leave.users.remove(current_user)
+        chl = [channel.name for channel in current_user.channels]
+        print(f"\n..........channels after leaving {chl}..........\n")
 
-    urs = [user.username for user in channel_leave.users]
-    print(f"after leave removing: {urs}\n")
+        urs = [user.username for user in channel_leave.users]
+        print(f"after leave removing: {urs}\n")
 
-    leave_msg = "Left" + "#" + channel_leave.name
-    current_user.add_message(msg=leave_msg, channel_id=channel_leave.id)
-    db.session.commit()
+        leave_msg = "Left" + "#" + channel_leave.name
+        current_user.add_message(msg=leave_msg, channel_id=channel_leave.id)
+        db.session.commit()
 
     # add emit to send message to all client in this channel that the users has left
 
     return jsonify({"success": True, "channel": data["channel"] })
+
+
+# @app.route("/chat/leave_channel", methods=["POST"])
+# def leave_channel():
+#     data = request.get_json()
+
+#     channel_leave = Channel.query.filter_by(name= data["channel"]).first()
+
+#     if not channel_leave:
+#         return jsonify({"success": False})
+
+#     urs = [user.username for user in channel_leave.users]
+#     print(f"before removing: {urs}\n")
+
+#     channel_leave.users.remove(current_user)
+
+#     urs = [user.username for user in channel_leave.users]
+#     print(f"after leave removing: {urs}\n")
+
+#     leave_msg = "Left" + "#" + channel_leave.name
+#     current_user.add_message(msg=leave_msg, channel_id=channel_leave.id)
+#     db.session.commit()
+
+#     # add emit to send message to all client in this channel that the users has left
+
+#     return jsonify({"success": True, "channel": data["channel"] })
 
 
     

@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
     // const channels = document.querySelector("#channels");
     const sendButton = document.querySelector("#send_message");
-    var activeChannelName = localStorage.getItem("activeChannelName");
 
     // When user is connected connected, 
     socket.on("connect", () => {
@@ -14,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on("message", data => {
+        const activeChannelName = localStorage.getItem("activeChannelName");
         console.log("message received");
         if (activeChannelName === data.room){
             displayMessage(data);
@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     sendButton.onclick = () =>{
+
+        const activeChannelName = localStorage.getItem("activeChannelName");
 
         console.log(activeChannelName)
         const inputMessage = document.querySelector("#user_message");
