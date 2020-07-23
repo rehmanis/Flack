@@ -91,7 +91,7 @@ $(document).ready(function() {
             $(this).tooltip('show');
         },
 
-        'mouseeleave': function (e) {
+        'mouseleave': function (e) {
             $(this).tooltip('hide');
         }
 
@@ -102,23 +102,26 @@ $(document).ready(function() {
     // $(".remove-channel-btn").hide();
     // $(".remove-channel-btn").children().hide();
 
-    $(document).on({
+    // $("#channels li").children("button").hide();
+    // $("#channels li").children("button").children().hide();
+    $("#channels li").children("div").hide();
+    
+    $("#channels li").on({
 
         'mouseenter': function (e) {
-            console.log("mouse over enter")
-            // console.log($(this).html());
-            // console.log($(this).children("button"))
-            // console.log($(".remove-channel-btn i"));
-            // $(this).children().show();
+            $(this).children("div").show();
+            // $(this).children("button").show();
+            // $(this).children("button").children().show();
+
         },
 
-        'mouseeleave': function (e) {
-            console.log("mouse over leave")
-            // $(this).children().hide();
-            //$(".remove-channel-btn i").css("visibility", "hidden");
+        'mouseleave': function (e) {
+            $(this).children("div").hide();
+            // $(this).children("button").hide();
+            // $(this).children("button").children().hide();
         }
 
-    }, '#channels li');
+    });
 
 
 });

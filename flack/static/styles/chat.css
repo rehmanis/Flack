@@ -88,7 +88,7 @@
 
 #sidebar li a{
     color: white;
-    text-decoration: none !important;
+    text-decoration: none !important;   
 }
 
 #sidebar ul li ul{
@@ -97,11 +97,11 @@
 
 
 
-#sidebar ul li ul li:hover, #add_channel:hover{
+#sidebar ul li ul li:hover, #add_channel:hover, .dropdown-menu a:hover{
     background-color: #6996AD;
 }
 
-#add_channel, .remove-channel-btn {
+#add_channel, .remove-channel-btn{
     float: right;
     border: none;
     color: white;
@@ -109,10 +109,28 @@
     border-radius: 30%;
 }
 
-#channels li:hover button{
+.remove-channel{
+    float: right;
+}
+
+.remove-channel-btn{
+    padding: 0;
+
+}
+
+.remove-channel-btn:hover{
+    opacity: 0.5;
+}
+
+
+#channels li:hover .remove-channel-btn{
     background-color: #6996AD;
 
 }
+
+/* .remove-channel-btn .dropdown-menu {
+    color: black;
+} */
 
 /* #channels li:hover button,i {
     visibility: visible;
@@ -199,3 +217,7 @@
     color: white;
     opacity: 0.7; /* Firefox */
   }
+
+.dropdown-menu{
+    background-color: #325C74;
+}

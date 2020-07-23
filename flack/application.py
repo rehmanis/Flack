@@ -230,6 +230,32 @@ def create_channel():
     return jsonify({"success": True})
 
 
+@app.route("/chat/leave_channel", methods=["POST"])
+def leave_channel():
+    data = request.get_json()
+
+    channel_leave = Channel.query.filter_by(name= data["channel"]).first()
+
+    if not channel_leave:
+        return jsonify({"success": False})
+
+    urs = [user.username for user in channel_leave.users]
+    print(f"before removing: {urs}\n")
+
+    channel_leave.users.remove(current_user)
+
+    urs = [user.username for user in channel_leave.users]
+    print(f"after leave removing: {urs}\n")
+
+    leave_msg = "Left" + "#" + channel_leave.name
+    current_user.add_message(msg=leave_msg, channel_id=channel_leave.id)
+    db.session.commit()
+
+    # add emit to send message to all client in this channel that the users has left
+
+    return jsonify({"success": True, "channel": data["channel"] })
+
+
     
 
 if __name__ == "__main__":

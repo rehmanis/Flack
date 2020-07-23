@@ -145,9 +145,15 @@
                                         <li id="{{channel.name}}"><a href="#">{{channel.name}}</a></li>
                                     {% else %}
                                         <li id="{{channel.name}}"><a href="#">{{channel.name}}</a>
-                                            <button type="button" class="remove-channel-btn ml-auto">
-                                                <i class="fa fa-times" aria-hidden="true"></i>
-                                            </button>
+                                            <div class="remove-channel btn-group dropright ">
+                                                <button type="button" class="btn remove-channel-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                </button>
+                                                <div class="dropdown-menu" data-channel="{{channel.name}}">
+                                                    <a class="dropdown-item" id="leave" href="#">leave</a>
+                                                    <a class="dropdown-item" id="delete" href="#">delete</a>
+                                                </div>                                                
+                                            </div>
                                         </li>
                                     {% endif %}
                                     

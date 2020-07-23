@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(25), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     sid = db.Column(db.String())
-    messages = db.relationship("Message", backref=db.backref("user", lazy=True))
+    messages = db.relationship("Message", cascade="all, delete-orphan", backref=db.backref("user", lazy=True))
     channels = db.relationship("Channel", secondary=user_channel_link, lazy=True, 
         backref=db.backref("users", lazy=True))
 

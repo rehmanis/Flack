@@ -49,41 +49,61 @@ $(document).ready(function() {
         }
     }
 
+
+
     // make the clicked channel to be active one, calling ajax request to retrieve the 
     // message for selected channel. Update tooltips and disable the user button if all 
     // users are already in this channel
     $('#channels').on("click", function(event) {
 
-        console.log("channel clicked");
-        console.log(event.target);
-
         if (event.target && (event.target.nodeName == "A" || event.target.nodeName == "LI")){
 
-            let activeChannel = document.querySelector("li.active");
-            activeChannel.classList.remove("active");
+            // console.log(event.target);
+            // console.log(event.target.nodeName);
+            // console.log(event.target.id);
+            // console.log(event.target.parentNode);
+            // console.log(event.target.parentNode.parentNode.innerHTML);
+            // console.log(event.target.id == "leave");
+            var parentElem = $(event.target.parentNode);
+            console.log(parentElem.data("channel"));
 
-            if (event.target.nodeName == "A"){
-                event.target.parentNode.classList.add("active");
+
+            if (event.target.id == "leave"){
+
+                leaveChannel(parentElem.data("channel"));
+                // ajax request to leave the group
+            }else if (event.target.id == "delete"){
+
             }else{
-                event.target.classList.add("active");
+
+                let activeChannel = document.querySelector("li.active");
+                activeChannel.classList.remove("active");
+    
+                if (event.target.nodeName == "A"){
+                    event.target.parentNode.classList.add("active");
+                }else{
+                    event.target.classList.add("active");
+                }
+    
+                activeChannelName = localStorage.getItem("activeChannelName");
+                channelSelected = (event.target.innerText || event.target.textContent);
+                console.log(channelSelected);
+                console.log(channelSelected.length);
+    
+                
+                if (activeChannelName != channelSelected){
+                    console.log(activeChannelName);
+                    localStorage.setItem("activeChannelName", channelSelected);        
+                    document.querySelector("#curr_channel").firstElementChild.innerHTML = "#" + channelSelected;
+                    getMessages(channelSelected);
+                    activeChannelName = channelSelected;
+    
+                }
+    
+                document.querySelector("#user_message").focus();
             }
 
-            activeChannelName = localStorage.getItem("activeChannelName");
-            channelSelected = (event.target.innerText || event.target.textContent);
-            console.log(channelSelected);
-            console.log(channelSelected.length);
 
-            
-            if (activeChannelName != channelSelected){
-                console.log(activeChannelName);
-                localStorage.setItem("activeChannelName", channelSelected);        
-                document.querySelector("#curr_channel").firstElementChild.innerHTML = "#" + channelSelected;
-                getMessages(channelSelected);
-                activeChannelName = channelSelected;
-
-            }
-
-            document.querySelector("#user_message").focus();
         }
 
     });
@@ -95,12 +115,6 @@ $(document).ready(function() {
     // else set the active channel from the stored one and update the count of users in this channel
     function updateChannelDisplay() {
 
-        console.log(activeChannelName);
-        const active = activeChannelName;
-        console.log(active);
-        // console.log($('#'+active))
-        console.log($("#" + activeChannelName));
-
         if (!activeChannelName || !activeChannelUsers){
 
             $("#channels").children(":first").addClass("active");
@@ -110,10 +124,12 @@ $(document).ready(function() {
             activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers")); 
             
         }else{
-
+            // console.log("here");
             // console.log(("#" + activeChannelName));
+
+            // // console.log(("#" + activeChannelName));
             // console.log($("#" + activeChannelName));
-            $(active).addClass("active");    
+            $($("#" + activeChannelName)).addClass("active");    
             $("#num_users a span").html(activeChannelUsers.length);
         }
 
@@ -138,6 +154,47 @@ $(document).ready(function() {
 
         document.querySelector("#message_section").append(p);
 
+    }
+
+    function leaveChannel(channel){
+        $.ajax({
+            url: 'chat/leave_channel',
+            type: 'POST',
+            data: JSON.stringify({ "channel" : channel } ),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function(data){
+                if(data.success){
+                    if (activeChannelName === data.channel){
+                        $("#" + data.channel).removeClass("active");
+                        const nextChannel = $("#" + data.channel).next()
+                        console.log(nextChannel);
+                        console.log(nextChannel.html());
+                        console.log(($.isEmptyObject(nextChannel)));
+                        console.log($("#" + data.channel).prev());
+                        const nextActiveChannel = (nextChannel.length === 0) ? $("#" + data.channel).prev() : nextChannel;
+                        console.log(nextActiveChannel);
+                        localStorage.setItem("activeChannelName", nextActiveChannel.children("a").html());
+                        activeChannelName =  localStorage.getItem("activeChannelName");
+                        $($("#" + activeChannelName)).addClass("active"); 
+                        console.log(activeChannelName);
+
+                        // delete the channel from 
+                        $("#" + data.channel).remove();
+
+                        // send a user left event to other users in the channel
+
+
+
+                    }
+                    
+                }else{
+
+                }
+
+            }
+        });        
     }
 
     function getMessages(channel){
@@ -172,34 +229,6 @@ $(document).ready(function() {
             }
         });
         
-        // const request = new XMLHttpRequest();
-        // request.open('POST', '/messages');
-        // request.onload = () => {
-        //     // Extract JSON data from request
-        //     const data = JSON.parse(request.responseText);
-        //     console.log(data);
-
-        //     document.querySelector("#message_section").innerHTML = "";
-
-        //     for (var i = 0; i < data.entries.length; i++){
-        //         displayMessage(data.entries[i]);
-        //     }
-
-        //     localStorage.setItem("activeChannelUsers", JSON.stringify(data.users));
-        //     activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers"));
-        //     document.querySelector("#num_users a span").innerHTML = activeChannelUsers.length;
-        //     updateUserTooltip();
-
-        // }
-        
-        // Add data to send with request
-        // const data = new FormData();
-        // data.append('channel', channel);
-
-        // // Send request
-        // request.send(data);
-
-        // return false;
     }
 
 });
