@@ -151,7 +151,9 @@
                                                 </button>
                                                 <div class="dropdown-menu" data-channel="{{channel.name}}">
                                                     <a class="dropdown-item" id="leave" href="#">leave</a>
-                                                    <a class="dropdown-item" id="delete" href="#">delete</a>
+                                                    {% if channel.name != 'other' %}
+                                                        <a class="dropdown-item" id="delete" href="#">delete</a>
+                                                    {% endif %}
                                                 </div>                                                
                                             </div>
                                         </li>

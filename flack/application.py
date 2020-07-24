@@ -242,7 +242,8 @@ def delete_channel():
     urs = [user.username for user in channel_leave.users]
     print(f"before removing: {urs}\n")
 
-    if data["isToBeDeleted"]:
+
+    if data["isToBeDeleted"] or (channel_leave.is_private and len(channel_leave.users) == 1):
         print(f"\ndeleting......\n")
         db.session.delete(channel_leave)
         db.session.commit()

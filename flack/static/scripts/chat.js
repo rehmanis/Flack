@@ -179,16 +179,15 @@ $(document).ready(function() {
                         $($("#" + activeChannelName)).addClass("active"); 
                         // console.log(activeChannelName);
 
-                        // delete the channel from 
-                        $("#" + data.channel).remove();
-
-                        $("#curr_channel a").html("#" + activeChannelName);
-                        getMessages(activeChannelName);
-
-                        // send a user left event to other users in the channel
-
                     }
-                    
+                    // delete the channel from 
+                    $("#" + data.channel).remove();
+
+                    $("#curr_channel a").html("#" + activeChannelName);
+                    getMessages(activeChannelName);
+
+                    // send a user left event to other users in the channel
+
                 }else{
 
                 }

@@ -86,7 +86,7 @@
     border-bottom: 1px solid gray;
 } */
 
-#sidebar li a{
+#sidebar li a:not(.dropdown-item){
     color: white;
     text-decoration: none !important;   
 }
@@ -97,7 +97,7 @@
 
 
 
-#sidebar ul li ul li:hover, #add_channel:hover, .dropdown-menu a:hover{
+#sidebar ul li ul li:hover, #add_channel:hover{
     background-color: #6996AD;
 }
 
@@ -218,6 +218,6 @@
     opacity: 0.7; /* Firefox */
   }
 
-.dropdown-menu{
-    background-color: #325C74;
-}
+/* .remove-channel .dropdown-menu{
+    background-color: #325C74 !important;   
+} */

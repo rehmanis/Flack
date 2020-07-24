@@ -12,6 +12,7 @@ $(document).ready(function() {
     $('#create_channel_form').on('submit', function(e){
         e.preventDefault();
         var value = $("#new_channel_name").val();
+
         $.ajax({
             url: 'chat/create_channel',
             type: 'POST',
@@ -21,8 +22,22 @@ $(document).ready(function() {
             success: function(data){
                 if(data.success){
 
-                    var newItem = "<li><a href='#'>" + value + "</a></li>";
+                    var newItem =  '<li id="' + value + '"><a href="#">' + value + '</a> \
+                                        <div class="remove-channel btn-group dropright"> \
+                                            <button type="button" class="btn remove-channel-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> \
+                                                <i class="fa fa-times" aria-hidden="true"></i> \
+                                            </button>\
+                                            <div class="dropdown-menu" data-channel="'+ value + '"> \
+                                                <a class="dropdown-item" id="leave" href="#">leave</a> \
+                                                <a class="dropdown-item" id="delete" href="#">delete</a> \
+                                            </div> \
+                                        </div> \
+                                    </li>';    
+                    
+
+                    
                     $('#channels').append(newItem);
+                    $("#channels li").children("div").hide();
                     $('#createChannelModal').modal('hide');
                     channelCreated = true;
     
@@ -106,9 +121,10 @@ $(document).ready(function() {
     // $("#channels li").children("button").children().hide();
     $("#channels li").children("div").hide();
     
-    $("#channels li").on({
+    $("#channels").on({
 
         'mouseenter': function (e) {
+            console.log("enter");
             $(this).children("div").show();
             // $(this).children("button").show();
             // $(this).children("button").children().show();
@@ -116,12 +132,13 @@ $(document).ready(function() {
         },
 
         'mouseleave': function (e) {
+            console.log("leave");
             $(this).children("div").hide();
             // $(this).children("button").hide();
             // $(this).children("button").children().hide();
         }
 
-    });
+    }, 'li');
 
 
 });
