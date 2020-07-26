@@ -164,11 +164,14 @@ def get_messages():
         # username = User.query.filter_by(id=msg_obj.user_id).first().username;
         username = msg_obj.user.username;
         msg_time = msg_obj.timestamp.strftime("%#I:%#M %p")
-        msg_date = msg_obj.timestamp.strftime("%D %B, %e")
+        msg_date = msg_obj.timestamp.strftime("%A %B, %eth")
         entry = {"username": username, "time": msg_time, "date": msg_date, "msg" : msg_obj.message}
         entries.append(entry)
 
     users = [user.username for user in channel.users]
+    print("-----------")
+    print(entry["date"])
+    print("----------------")
 
     return jsonify({"entries": entries, "users": users, "success": True})
 

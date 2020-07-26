@@ -17,7 +17,7 @@
     display: flex;
     flex-direction: row;
     flex: 1;
-    max-height: 10vh;
+    min-height: 10vh;
 
 }
 
@@ -152,9 +152,9 @@
 
 #message_section {
     
-    min-height: 72vh;
+    height: 72vh;
     overflow-y: auto; /*Make  this section scrolable */
-    padding: 1em;
+    /* padding: 1em; */
     
 }
 
@@ -221,3 +221,37 @@
 /* .remove-channel .dropdown-menu{
     background-color: #325C74 !important;   
 } */
+
+
+.message-container {
+    display: flex; /** set the container as flexbox **/
+    align-items: center; /** align all items vertically **/
+        width: 200px;
+    margin-bottom: 10px;
+    padding: 1em;
+  }
+
+  .message-text-container {
+    margin-left: 10px;
+  }
+
+.avatar {
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border-radius: 10%;
+  }
+
+.date {
+    width: 100%; 
+    text-align: center; 
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+    line-height: 0.1em;
+    margin: 20px 0 20px; 
+ } 
+ 
+.date span {
+    background:#fff; 
+    padding: 0.5em;
+     /* padding:0 10px;  */
+ }

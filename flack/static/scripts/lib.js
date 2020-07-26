@@ -55,19 +55,20 @@ function getUsersInChannel(){
 // create the appropriate html to display the message based on the dictionary data
 function displayMessage(data){ 
 
-    const p = document.createElement("p");
-    const br = document.createElement("br");
-    
-    const span_time = document.createElement("span");
-    const span_username = document.createElement("span");
-    const span_date = document.createElement("span");
-    span_username.innerHTML = data.username;
-    span_time.innerHTML = data.time;
-    span_date.innerHTML = data.date;
-    span_time.className += " time";
-    span_username.className += " username";
-    p.innerHTML = span_username.outerHTML + " " + span_time.outerHTML + br.outerHTML + data.msg;
 
-    document.querySelector("#message_section").append(p);
+    let date = '<div class="date"><span>' + data.date + '</span></div>'
+
+    let message =   '<div class="message-container"> \
+                        <img src="./static/images/man-silhouette-profile-7.png" alt="Avatar" class="avatar"> \
+                        <div class="message-text-container"> \
+                            <span class="username">' + data.username  + '</span> \
+                            <span class="time">' + ' ' + data.time + '</span> \
+                            <br>' + 
+                            data.msg + 
+                        '</div> \
+                    </div>'; 
+                    
+
+    $("#message_section").append(date + message);
 
 }
