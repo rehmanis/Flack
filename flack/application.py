@@ -174,21 +174,21 @@ def add_users():
     new_channel = Channel.query.filter_by(name=data["channel"]).first()
 
     for username in usernames_to_add:
-        print(f"\n\n username: {username} \n\n")
+        print(f"\n\n---------------------- username: {username} \n\n")
         # find the user with this username in the db
         user = User.query.filter_by(username=username).first()
         # add the channel to this users channel list
         user.channels.append(new_channel)
         # add this new channel to the desired channel's users list
-        new_channel.users.append(user)
+        #new_channel.users.append(user)
         join_msg = "Joined" + "#" + new_channel.name
         user.add_message(msg=join_msg, channel_id=new_channel.id)
 
         chl = [channel.name for channel in user.channels]
         urs = [user.username for user in new_channel.users]
         
-        print(f"\nAll channels: {chl} \n")
-        print(f"\nAll users: {urs} \n")
+        print(f"\n-------------All channels: {chl} \n")
+        print(f"\n-------------All users: {urs} \n")
 
     db.session.commit()
 
