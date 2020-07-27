@@ -24,7 +24,7 @@
 
     <body>
         <nav class="navbar navbar-expand-md navbar-light bg-light border">
-            <a class="navbar-brand" href="/"><span class="blue">Flack</span></a>
+            <a class="navbar-brand" href="/"><h1 class="blue">Welcome to Flack</h1></a>
             <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -47,12 +47,18 @@
                 {% endif %}
             {% endwith %}
 
-            <main>
-                {% block main %}
-                {% endblock %}
-            </main>
+            {% block main %}
+            {% endblock %}
 
         </div>
+
+        <!-- Demo image start -->
+        <div id="image-section">
+            <picture>
+                <img class="" src="">
+            </picture>
+        </div>
+        <!-- Demo image end -->
         
         <script
             src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

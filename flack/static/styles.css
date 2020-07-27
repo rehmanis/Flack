@@ -9,8 +9,14 @@ nav .navbar-brand .blue
     color: #537fbe;
 }
 
+#righthand_pannel p {
+    font-size: 0.8em;
+    color: grey;
+}
 
-a, a:hover, a:focus {
+
+
+/* a, a:hover, a:focus {
     color: inherit;
     text-decoration: none;
     transition: all 0.3s;
@@ -20,42 +26,42 @@ a, a:hover, a:focus {
 #sidebar ul li a:hover {
     color: #7386D5;
     background: #fff;
-}
+} */
 
-#sidebar ul{
+/* #sidebar ul{
     padding-left: 20px;
     font-size: 1.1em;
-}
+} */
 
 
-#sidebar {
-    float: left; /* Make this div as wide as its contents */
+/* #sidebar {
+    float: left; 
     min-height: 100vh;
     padding-left: 1em;
     padding-top: 3em;
     padding-right:1em;
 
-}
+} */
 
-#message_area {
-    overflow: hidden; /* Make this div take up the rest of the horizontal space, and no more */
-}
+/* #message_area {
+    overflow: hidden; 
+} */
 
-#message_section {
+/* #message_section {
     padding-top: 1em;
     padding-left: 1em;
     padding-bottom: 1em;
     min-height: 82vh;
     max-height: 82vh;
-    overflow-y: auto; /*Make  this section scrolable */
-}
+    overflow-y: auto; 
+} */
 
-#input_section {
+/* #input_section {
     padding-left: 1em;
     padding-right: 1em;
     bottom: 0;
-}
+} */
 
-nav {
+/* nav {
     background-color: black;
-}
+} */

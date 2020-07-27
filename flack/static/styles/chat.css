@@ -18,15 +18,23 @@
     flex-direction: row;
     flex: 1;
     min-height: 10vh;
+    
 
 }
 
+/* #curr_user_display{
+    padding: 1em;
+} */
+
+
 #primary_nav, #secondary_nav{
     border-bottom: 1px solid #E8E8E8;
+    
 }
 
 #curr_user_display, #channel_nav {
     padding: 1em;
+    align-items: center;
 
 }
 
@@ -35,6 +43,7 @@
     display: flex;
     flex-direction: row;
     flex: 1;
+    /* align-items: center; */
 }
 
 #channel_nav ul{
@@ -89,6 +98,10 @@
 #sidebar li a:not(.dropdown-item){
     color: white;
     text-decoration: none !important;   
+}
+
+#num_users a, #curr_channel a{
+    color: gray
 }
 
 #sidebar ul li ul{
@@ -226,14 +239,15 @@
 .message-container {
     display: flex; /** set the container as flexbox **/
     align-items: center; /** align all items vertically **/
-        width: 200px;
     margin-bottom: 10px;
     padding: 1em;
+
   }
 
-  .message-text-container {
+.message-text-container {
     margin-left: 10px;
-  }
+
+}
 
 .avatar {
     vertical-align: middle;
@@ -255,3 +269,4 @@
     padding: 0.5em;
      /* padding:0 10px;  */
  }
+

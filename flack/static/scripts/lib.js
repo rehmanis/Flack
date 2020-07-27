@@ -55,8 +55,21 @@ function getUsersInChannel(){
 // create the appropriate html to display the message based on the dictionary data
 function displayMessage(data){ 
 
+    let lastDate = $("#message_section").children(".date").last();
+    let date = '';
+    console.log(lastDate);
+    console.log(data.date);
+    
 
-    let date = '<div class="date"><span>' + data.date + '</span></div>'
+    if (lastDate.length != 0){
+        // trying to get the text inside the span
+        lastDate = lastDate.children().html();
+    }
+
+    if (lastDate != data.date){
+        date += '<div class="date"><span>' + data.date + '</span></div>';
+    }
+
 
     let message =   '<div class="message-container"> \
                         <img src="./static/images/man-silhouette-profile-7.png" alt="Avatar" class="avatar"> \

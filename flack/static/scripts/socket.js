@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const activeChannelName = localStorage.getItem("activeChannelName");
         console.log("message received");
         if (activeChannelName === data.room){
+            $("#message_section").animate({ scrollTop: $('#message_section').prop("scrollHeight")}, 700);
             displayMessage(data);
         }else{
             // add a bubble next to channel to indicate unread message in visible

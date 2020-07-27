@@ -90,8 +90,8 @@ def message(data):
         raise "PROBLEM"
 
     timestamp = user.add_message(msg=data["msg"], channel_id=selected_channel.id)
-    msg_time = timestamp.strftime("%#I:%#M %p")
-    msg_date = timestamp.strftime("%D %B, %e")
+    msg_time = timestamp.strftime("%#I:%M %p")
+    msg_date = timestamp.strftime("%A %B, %eth")
 
     temp = {"username": data["username"], "msg": data["msg"], "time": msg_time, "date": msg_date}
 
@@ -129,17 +129,6 @@ def on_connect(data):
 def add_channel(data):
     pass
 
-# @app.route("/users", methods=["POST"])
-# def get_users():
-#     data = request.get_json()
-#     channel_name = data["channel"]
-#     channel = Channel.query.filter_by(name=channel_name).first()
-#     users = [user.username for user in channel.users]
-
-#     return jsonify({"users": users})
-
-
-
 
 @app.route("/messages", methods=["POST"])
 def get_messages():
@@ -163,7 +152,7 @@ def get_messages():
     for msg_obj in channel.messages:
         # username = User.query.filter_by(id=msg_obj.user_id).first().username;
         username = msg_obj.user.username;
-        msg_time = msg_obj.timestamp.strftime("%#I:%#M %p")
+        msg_time = msg_obj.timestamp.strftime("%#I:%M %p")
         msg_date = msg_obj.timestamp.strftime("%A %B, %eth")
         entry = {"username": username, "time": msg_time, "date": msg_date, "msg" : msg_obj.message}
         entries.append(entry)
