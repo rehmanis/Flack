@@ -67,7 +67,7 @@ def login():
     if login_form.validate_on_submit():
         user = User.query.filter_by(username=login_form.username.data).first()
         login_user(user)
-        flash("Successfully Logged in", "success")
+        # flash("Successfully Logged in", "success")
         return redirect(url_for("chat"))
 
     return render_template("login.html", form=login_form)
@@ -99,14 +99,14 @@ def message(data):
           "time": msg_time, "date": msg_date, "room": data["room"]}, room=data["room"])
 
 
-@socketio.on('join')
+@socketio.on('join channel')
 def on_join(data):
-    username = data['username']
-    room = data['room']
-    msg_time = datetime.now().strftime("%#I:%#M %p")
-    msg_date = datetime.now().strftime("%D %B, %e")
-    join_room(room)
-    send({"msg": "joined #" + room, "username": username, "time": msg_time, "date": msg_date}, room=room)
+    # username = data['username']
+    # room = data['room']
+    # msg_time = datetime.now().strftime("%#I:%#M %p")
+    # msg_date = datetime.now().strftime("%D %B, %e")
+    join_room(data['channel'])
+    # send({"msg": "joined #" + room, "username": username, "time": msg_time, "date": msg_date}, room=room)
 
 @socketio.on('leave')
 def on_leave(data):
@@ -174,21 +174,26 @@ def add_users():
     new_channel = Channel.query.filter_by(name=data["channel"]).first()
 
     for username in usernames_to_add:
-        print(f"\n\n---------------------- username: {username} \n\n")
+        # print(f"\n\n---------------------- username: {username} \n\n")
         # find the user with this username in the db
         user = User.query.filter_by(username=username).first()
         # add the channel to this users channel list
         user.channels.append(new_channel)
-        # add this new channel to the desired channel's users list
+        # add this new channel to the desired channel's users list. This does 
+        # not seem to be required as the above statement already takes care of this
         #new_channel.users.append(user)
+
+        socketio.server.enter_room(user.sid, new_channel.name)
         join_msg = "Joined" + "#" + new_channel.name
         user.add_message(msg=join_msg, channel_id=new_channel.id)
 
-        chl = [channel.name for channel in user.channels]
-        urs = [user.username for user in new_channel.users]
         
-        print(f"\n-------------All channels: {chl} \n")
-        print(f"\n-------------All users: {urs} \n")
+
+        # chl = [channel.name for channel in user.channels]
+        # urs = [user.username for user in new_channel.users]
+        
+        # print(f"\n-------------All channels: {chl} \n")
+        # print(f"\n-------------All users: {urs} \n")
 
     db.session.commit()
 

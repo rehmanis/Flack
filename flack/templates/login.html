@@ -20,7 +20,9 @@
         </div>
 
         {{ form.csrf_token }}
-
     </form>
+
+    <hr>
+    <p>Not yet registered? <a href={{url_for('index')}}>Sign up here</a>.</p>
 
 {% endblock %}

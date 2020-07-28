@@ -36,24 +36,6 @@ $(document).ready(function() {
             sendButton.click();
         }
     });
-    // inputMessage.onkeyup = () => {
-    //     console.log("here");
-    
-    //     if (inputMessage.value.length > 0){
-    //         sendButton.disabled = false;
-    //         console.log("false");
-    //     }else{
-    //         sendButton.disabled = true;
-    //         console.log("true");
-    //     }
-
-    //     if (inputMessage.value.length > 0 && event.keyCode === 13){
-    //         console.log("entered")
-    //         sendButton.click();
-    //     }
-    // };
-
-    // 
 
     $("#new_channel_name").on("keyup", function(event){
 

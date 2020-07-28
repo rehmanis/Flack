@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block main %}
-
+    <h2>Getting started!</h2>
     <form action="{{ url_for('index') }}", method="POST">
 
         {{ displayField(form.username, "Username", autocomplete="off", autofocus=true) }}
@@ -14,11 +14,13 @@
         {{ displayField(form.password_confirm, "Confirm Password") }}
  
         <div class="form-group">
-            {{ form.submit_button(class_="btn btn-primary") }}
+            {{ form.submit_button(class_="btn") }}
         </div>
 
         {{ form.csrf_token }}
-
     </form>
+
+    <hr>
+    <p>Have already registered? <a href={{url_for('login')}}>Sign in here</a>.</p>
 
 {% endblock %}

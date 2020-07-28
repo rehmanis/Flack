@@ -35,30 +35,39 @@
                 </ul>
             </div>
         </nav>
+
+        <div id="main_sections">
+
+            <!-- Demo image start -->
+            <div id="image_section">
+                <picture>
+                    <img class="card" src="{{ url_for('static', filename='images/demo.gif') }}">
+                </picture>
+            </div>
+            <!-- Demo image end -->
+
+
+            <div id="righthand_pannel">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} border text-center" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
     
-        <div id="righthand_pannel">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} border text-center" role="alert">
-                        {{ message }}
-                    </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-
-            {% block main %}
-            {% endblock %}
+                {% block main %}
+                {% endblock %}
+    
+            </div>
+    
 
         </div>
+    
 
-        <!-- Demo image start -->
-        <div id="image-section">
-            <picture>
-                <img class="" src="">
-            </picture>
-        </div>
-        <!-- Demo image end -->
         
         <script
             src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
