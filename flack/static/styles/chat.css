@@ -64,14 +64,24 @@
 
 }
 
+#toggle_sidebar_btn {
+
+    border: none;
+    background-color: inherit;
+    color: white;
+}
+
 
 #sidebar, #curr_user_display {
     
     /* padding-left: 1.5em;
     padding-top: 1em; */
     background-color: #386c8a;
-    flex: 0 0 25vw;
+    /* flex: 0 0 25vw; */
     color: white;
+    min-width: 25vw;
+    flex: 0 0 25vw;
+    
     
 }
 
@@ -242,10 +252,14 @@
     margin-bottom: 10px;
     padding: 1em;
 
+
   }
 
 .message-text-container {
     margin-left: 10px;
+    /* max-width: 20vw ; */
+    word-break: break-all; /* new */
+
 
 }
 
@@ -270,3 +284,8 @@
      /* padding:0 10px;  */
  }
 
+ @media only screen and (max-width: 700px) {
+    #sidebar, #curr_user_display {
+        display: none;
+    }
+  }

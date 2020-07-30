@@ -3,6 +3,12 @@ $(document).ready(function() {
 
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+    var channelCreated = false;
+    var isSideBarShown = true;
+
+    // To style all selects based on the bootsrap-select CSS
+    $('select').selectpicker();
+    
     // // const channels = document.querySelector("#channels");
     // const sendButton = document.querySelector("#send_message");
 
@@ -32,6 +38,23 @@ $(document).ready(function() {
 
     });
 
+    // toggle the sidebar menue when button is pressed
+    $("#toggle_sidebar_btn").on("click", function(e){
+        console.log("button clicked")
+        $(this).find('svg').toggleClass('fa-chevron-down fa-chevron-up')
+
+        if (isSideBarShown){
+
+            $("#sidebar, #curr_user_display").hide();
+            isSideBarShown = false;
+        }else{
+
+            $("#sidebar, #curr_user_display").show();
+            isSideBarShown = true;
+        }
+
+    });
+
     $("#send_message").on('click', function(e) {
 
         const activeChannelName = localStorage.getItem("activeChannelName");
@@ -48,9 +71,7 @@ $(document).ready(function() {
         html: true
     })
 
-    $('select').selectpicker();
-    
-    var channelCreated = false;
+
     
     $('#create_channel_form').on('submit', function(e){
         e.preventDefault();
