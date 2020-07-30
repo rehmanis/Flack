@@ -57,9 +57,6 @@ function displayMessage(data){
 
     let lastDate = $("#message_section").children(".date").last();
     let date = '';
-    console.log(lastDate);
-    console.log(data.date);
-    
 
     if (lastDate.length != 0){
         // trying to get the text inside the span

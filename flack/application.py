@@ -24,7 +24,6 @@ def load_user(user_id):
 def chat():
     user_channels = [channel.name for channel in current_user.channels]
     users = [user.username for user in User.query.all()]
-    print(f"\n\n{users}\n\n")
 
     return render_template("chat.html", users=users, channels=user_channels)
 
@@ -67,7 +66,6 @@ def login():
     if login_form.validate_on_submit():
         user = User.query.filter_by(username=login_form.username.data).first()
         login_user(user)
-        # flash("Successfully Logged in", "success")
         return redirect(url_for("chat"))
 
     return render_template("login.html", form=login_form)
@@ -83,30 +81,27 @@ def logout():
 @socketio.on("message")
 def message(data):
     user = User.query.filter_by(username=current_user.username).first()
-    selected_channel = Channel.query.filter_by(name=data["room"]).first()
+    selected_channel = Channel.query.filter_by(name=data["channel"]).first()
 
     # just temporary check. Need to update this later
     if not selected_channel:
         raise "PROBLEM"
 
-    timestamp = user.add_message(msg=data["msg"], channel_id=selected_channel.id)
-    msg_time = timestamp.strftime("%#I:%M %p")
-    msg_date = timestamp.strftime("%A %B, %eth")
 
-    temp = {"username": data["username"], "msg": data["msg"], "time": msg_time, "date": msg_date}
+    msg_obj = user.add_message(msg=data["msg"], channel_id=selected_channel.id)
+    msg_time = msg_obj.timestamp.strftime("%#I:%M %p")
+    msg_date = msg_obj.timestamp.strftime("%A %B, %eth")
+
+    # temp = {"username": data["username"], "msg": data["msg"], "time": msg_time, "date": msg_date}
 
     send({"username": data["username"], "msg": data["msg"], 
-          "time": msg_time, "date": msg_date, "room": data["room"]}, room=data["room"])
+          "time": msg_time, "date": msg_date, "channel": data["channel"]}, room=data["channel"])
 
 
 @socketio.on('join channel')
 def on_join(data):
-    # username = data['username']
-    # room = data['room']
-    # msg_time = datetime.now().strftime("%#I:%#M %p")
-    # msg_date = datetime.now().strftime("%D %B, %e")
     join_room(data['channel'])
-    # send({"msg": "joined #" + room, "username": username, "time": msg_time, "date": msg_date}, room=room)
+
 
 @socketio.on('leave')
 def on_leave(data):
@@ -134,18 +129,18 @@ def add_channel(data):
 def get_messages():
     data = request.get_json()
     channel_name = data["channel"] 
-    print()
-    print(len(channel_name))
-    print(f"\n\n{channel_name}\n\n");
+    # print()
+    # print(len(channel_name))
+    # print(f"\n\n{channel_name}\n\n");
 
     ### not the most efficient way to query.
     ### Need to think about different db design and possibly using db JOIN
 
     channel = Channel.query.filter_by(name=channel_name).first()
-    print(f"\n")
-    print(f'\nchannel found: {channel}\n')
-    msg = [msg.message for msg in channel.messages]
-    print(f"\n\n{msg}\n\n");
+    # print(f"\n")
+    # print(f'\nchannel found: {channel}\n')
+    # msg = [msg.message for msg in channel.messages]
+    # print(f"\n\n{msg}\n\n");
     # messages = Message.query.filter_by(channel_id=channel.id)
     entries = []
 
@@ -158,9 +153,6 @@ def get_messages():
         entries.append(entry)
 
     users = [user.username for user in channel.users]
-    print("-----------")
-    print(entry["date"])
-    print("----------------")
 
     return jsonify({"entries": entries, "users": users, "success": True})
 
@@ -174,28 +166,24 @@ def add_users():
     new_channel = Channel.query.filter_by(name=data["channel"]).first()
 
     for username in usernames_to_add:
-        # print(f"\n\n---------------------- username: {username} \n\n")
         # find the user with this username in the db
         user = User.query.filter_by(username=username).first()
         # add the channel to this users channel list
         user.channels.append(new_channel)
         # add this new channel to the desired channel's users list. This does 
         # not seem to be required as the above statement already takes care of this
-        #new_channel.users.append(user)
 
-        socketio.server.enter_room(user.sid, new_channel.name)
+        if user.sid:
+            socketio.server.enter_room(user.sid, new_channel.name)
         join_msg = "Joined" + "#" + new_channel.name
-        user.add_message(msg=join_msg, channel_id=new_channel.id)
 
-        
+        msg_obj = user.add_message(msg=join_msg, channel_id=new_channel.id)
+        send_message(msg_obj, username, data["channel"])
 
-        # chl = [channel.name for channel in user.channels]
-        # urs = [user.username for user in new_channel.users]
-        
-        # print(f"\n-------------All channels: {chl} \n")
-        # print(f"\n-------------All users: {urs} \n")
 
     db.session.commit()
+
+    socketio.emit("user added", {"username": current_user.username, "channel": data["channel"]}, room=data["channel"])
 
     return jsonify({"success": True})
 
@@ -219,9 +207,6 @@ def create_channel():
     chl = [channel.name for channel in current_user.channels]
     urs = [user.username for user in new_channel.users]
 
-
-    print(f"\n\n{chl}\n\n{urs}\n\n")
-
     CHANNELS.append(channel_name)
 
     return jsonify({"success": True})
@@ -231,7 +216,7 @@ def create_channel():
 def delete_channel():
     data = request.get_json()
 
-    channel_leave = Channel.query.filter_by(name= data["channel"]).first()
+    channel_leave = Channel.query.filter_by(name=data["channel"]).first()
 
     if not channel_leave:
         return jsonify({"success": False})
@@ -239,6 +224,8 @@ def delete_channel():
     urs = [user.username for user in channel_leave.users]
     print(f"before removing: {urs}\n")
 
+    if current_user.sid:
+        socketio.server.leave_room(current_user.sid,data["channel"])
 
     if data["isToBeDeleted"] or (channel_leave.is_private and len(channel_leave.users) == 1):
         print(f"\ndeleting......\n")
@@ -255,41 +242,27 @@ def delete_channel():
         print(f"after leave removing: {urs}\n")
 
         leave_msg = "Left" + "#" + channel_leave.name
-        current_user.add_message(msg=leave_msg, channel_id=channel_leave.id)
+        msg = current_user.add_message(msg=leave_msg, channel_id=channel_leave.id)
         db.session.commit()
+
+
+        send_message(msg, current_user.username, data["channel"])
+        socketio.emit("leave channel", {"username": current_user.username}, room=data["channel"])
+        
 
     # add emit to send message to all client in this channel that the users has left
 
     return jsonify({"success": True, "channel": data["channel"] })
 
 
-# @app.route("/chat/leave_channel", methods=["POST"])
-# def leave_channel():
-#     data = request.get_json()
+def send_message(msg, username, channel_name):
 
-#     channel_leave = Channel.query.filter_by(name= data["channel"]).first()
-
-#     if not channel_leave:
-#         return jsonify({"success": False})
-
-#     urs = [user.username for user in channel_leave.users]
-#     print(f"before removing: {urs}\n")
-
-#     channel_leave.users.remove(current_user)
-
-#     urs = [user.username for user in channel_leave.users]
-#     print(f"after leave removing: {urs}\n")
-
-#     leave_msg = "Left" + "#" + channel_leave.name
-#     current_user.add_message(msg=leave_msg, channel_id=channel_leave.id)
-#     db.session.commit()
-
-#     # add emit to send message to all client in this channel that the users has left
-
-#     return jsonify({"success": True, "channel": data["channel"] })
+    msg_time = msg.timestamp.strftime("%#I:%M %p")
+    msg_date = msg.timestamp.strftime("%A %B, %eth")
+    socketio.send({"username": username, "msg": msg.message, 
+        "time": msg_time, "date": msg_date, "channel": channel_name}, room=channel_name)
 
 
     
-
 if __name__ == "__main__":
     socketio.run(app, debug=True)

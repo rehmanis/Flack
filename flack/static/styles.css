@@ -8,18 +8,24 @@ nav .navbar-brand .blue
     color: grey;
 }
 
+#main_sections, html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+
+}
+
 #main_sections {
     display: flex;
     flex-direction: row;
-    flex: 1;
     align-items: center;
-
+    justify-content: center;
 }
 
-#image_section{
-    float: left;
-    padding: 2em;
-}
 
 
 #image_section picture img{
@@ -27,7 +33,7 @@ nav .navbar-brand .blue
 }
 
 #righthand_pannel {
-    padding: 4em;
+
     flex: 1;
 }
 
@@ -50,8 +56,37 @@ h2 {
 }
 
 
-@media only screen and (max-width: 1000px) {
+
+@media (min-width: 800px){
+    #image_section {
+        padding: 2em;
+    }
+
+    #righthand_pannel {
+
+        padding: 2em;
+        max-width: 40%;
+
+    }
+
+    /* #image_section, #righthand_pannel {
+        margin-top: 100px;
+    } */
+
+
+
+}
+
+
+@media only screen and (max-width: 800px) {
     picture {
         display: none;
     }
+
+    #righthand_pannel {
+
+        padding: 5em;
+
+    }
+
   }

@@ -33,7 +33,7 @@ class User(db.Model, UserMixin):
         new_msg = Message(message=msg, user_id=self.id, channel_id=channel_id)
         db.session.add(new_msg)
         db.session.commit()
-        return new_msg.timestamp
+        return new_msg
 
 
 class Channel(db.Model):

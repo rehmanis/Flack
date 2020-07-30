@@ -19,6 +19,24 @@ $(document).ready(function() {
 
     });
 
+    socket.on("leave channel", data => {
+        var currUsers = parseInt($("#num_users a span").html()) - 1;
+        removeUserFromStorage(data.username);
+        $("#num_users a span").html(currUsers);
+        updateUserTooltip();
+        
+    });
+
+    function removeUserFromStorage(user){
+        var activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers"));
+        var i = activeChannelUsers.findIndex(username=>username===user);
+
+        if (i != -1){
+            activeChannelUsers.splice(i,1);
+            localStorage.setItem("activeChannelUsers", JSON.stringify(activeChannelUsers));
+        }
+    }
+
     // When user is added to new channel.
 
     // socket.on("user joined channel", data =>{
@@ -28,7 +46,7 @@ $(document).ready(function() {
     socket.on("message", data => {
         const activeChannelName = localStorage.getItem("activeChannelName");
         console.log("message received");
-        if (activeChannelName === data.room){
+        if (activeChannelName === data.channel){
             $("#message_section").animate({ scrollTop: $('#message_section').prop("scrollHeight")}, 700);
             displayMessage(data);
         }else{
@@ -36,6 +54,29 @@ $(document).ready(function() {
             // channels
         }
 
+    });
+
+    socket.on("user added", data => {
+
+        console.log($("#" + data.channel));
+
+        if ($("#" + data.channel).length == 0){
+            var newItem =  '<li id="' + data.channel + '"><a href="#">' + data.channel + '</a> \
+                                <div class="remove-channel btn-group dropright"> \
+                                    <button type="button" class="btn remove-channel-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> \
+                                        <i class="fa fa-times" aria-hidden="true"></i> \
+                                    </button>\
+                                    <div class="dropdown-menu" data-channel="'+ data.channel + '"> \
+                                        <a class="dropdown-item" id="leave" href="#">leave</a> \
+                                        <a class="dropdown-item" id="delete" href="#">delete</a> \
+                                    </div> \
+                                </div> \
+                            </li>';    
+
+            $('#channels').append(newItem);
+            $("#channels li").children("div").hide();
+                        
+        }
     });
 
     // toggle the sidebar menue when button is pressed
@@ -61,7 +102,7 @@ $(document).ready(function() {
 
         console.log(activeChannelName)
         const inputMessage = document.querySelector("#user_message");
-        socket.send({"username": username, "room": activeChannelName, "msg" : inputMessage.value});
+        socket.send({"username": username, "channel": activeChannelName, "msg" : inputMessage.value});
         inputMessage.value = "";
         sendButton.disabled = true;
     });

@@ -17,7 +17,7 @@ $(document).ready(function() {
     document.querySelector("#curr_channel").firstElementChild.innerHTML = "#" + activeChannelName;
     // make an ajax request to get the channel messages and current users in this channel and
     // update the display accordingly
-    console.log(activeChannelName);
+
     getMessages(activeChannelName);
     // since nothing is typed this moment, make sure to prevent sending message
     sendButton.disabled = true;
@@ -114,20 +114,16 @@ $(document).ready(function() {
     // else set the active channel from the stored one and update the count of users in this channel
     function updateChannelDisplay() {
 
-        if (!activeChannelName || !activeChannelUsers){
+        if (!activeChannelName || !activeChannelUsers || $("#" + activeChannelName).length === 0){
 
             $("#channels").children(":first").addClass("active");
             localStorage.setItem("activeChannelName", $("li.active a").html());
             activeChannelName = localStorage.getItem("activeChannelName");
             localStorage.setItem("activeChannelUsers", JSON.stringify(users));
             activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers")); 
-            
-        }else{
-            // console.log("here");
-            // console.log(("#" + activeChannelName));
 
-            // // console.log(("#" + activeChannelName));
-            // console.log($("#" + activeChannelName));
+        }else{
+
             $($("#" + activeChannelName)).addClass("active");    
             $("#num_users a span").html(activeChannelUsers.length);
         }
@@ -193,7 +189,6 @@ $(document).ready(function() {
 
                     for (var i = 0; i < data.entries.length; i++){
                         displayMessage(data.entries[i]);
-                        console.log(data.entries[i]);
                     }
 
                     localStorage.setItem("activeChannelUsers", JSON.stringify(data.users));
