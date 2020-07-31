@@ -28,12 +28,13 @@ from flack.models import User, Message, Channel
 db.create_all()
 db.session.commit()
 
-
-# REMOVE THIS LATER. ONLY FOR TESTING PURPOSES
 # create the initial channels
-# chan1 = Channel(name="general", is_private=False)
-# chan2 = Channel(name="other", is_private=False)
-# db.session.add(chan1)
-# db.session.add(chan2)
-# db.session.commit()
+if (not Channel.query.filter_by(name="general").first()):
+    chan1 = Channel(name="general", is_private=False)
+    db.session.add(chan1)
+    db.session.commit()
 
+if (not Channel.query.filter_by(name="other").first()):
+    chan2 = Channel(name="other", is_private=False)
+    db.session.add(chan2)
+    db.session.commit()

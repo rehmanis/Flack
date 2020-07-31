@@ -57,12 +57,6 @@ $(document).ready(function() {
 
         if (event.target && (event.target.nodeName == "A" || event.target.nodeName == "LI")){
 
-            // console.log(event.target);
-            // console.log(event.target.nodeName);
-            // console.log(event.target.id);
-            // console.log(event.target.parentNode);
-            // console.log(event.target.parentNode.parentNode.innerHTML);
-            // console.log(event.target.id == "leave");
             var parentElem = $(event.target.parentNode);
             console.log(parentElem.data("channel"));
 
@@ -101,10 +95,7 @@ $(document).ready(function() {
     
                 document.querySelector("#user_message").focus();
             }
-
-
         }
-
     });
 
 
@@ -146,25 +137,16 @@ $(document).ready(function() {
                     if (activeChannelName === data.channel){
                         $("#" + data.channel).removeClass("active");
                         const nextChannel = $("#" + data.channel).next()
-                        // console.log(nextChannel);
-                        // console.log(nextChannel.html());
-                        // console.log(($.isEmptyObject(nextChannel)));
-                        // console.log($("#" + data.channel).prev());
                         const nextActiveChannel = (nextChannel.length === 0) ? $("#" + data.channel).prev() : nextChannel;
-                        // console.log(nextActiveChannel);
                         localStorage.setItem("activeChannelName", nextActiveChannel.children("a").html());
                         activeChannelName =  localStorage.getItem("activeChannelName");
                         $($("#" + activeChannelName)).addClass("active"); 
-                        // console.log(activeChannelName);
-
                     }
                     // delete the channel from 
                     $("#" + data.channel).remove();
 
                     $("#curr_channel a").html("#" + activeChannelName);
                     getMessages(activeChannelName);
-
-                    // send a user left event to other users in the channel
 
                 }else{
 

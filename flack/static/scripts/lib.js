@@ -82,3 +82,13 @@ function displayMessage(data){
     $("#message_section").append(date + message);
 
 }
+
+function removeUserFromStorage(user){
+    var activeChannelUsers = JSON.parse(localStorage.getItem("activeChannelUsers"));
+    var i = activeChannelUsers.findIndex(username=>username===user);
+
+    if (i != -1){
+        activeChannelUsers.splice(i,1);
+        localStorage.setItem("activeChannelUsers", JSON.stringify(activeChannelUsers));
+    }
+}

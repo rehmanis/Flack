@@ -30,6 +30,16 @@ class RegistrationForm(FlaskForm):
     submit_button = SubmitField("Register")
 
     def validate_username(self, field):
+        """
+            Inline validator for username.
+            Checks to see if a user object with specified username is already present in the database
+
+        Args:
+            field : The form field that contains the username data (accessed by field.data)
+
+        Raises:
+            ValidationError: if the username entered in the field is already in the database
+        """
         test = User.query.filter_by(username=field.data).first()
 
         if User.query.filter_by(username=field.data).first():
@@ -37,6 +47,7 @@ class RegistrationForm(FlaskForm):
 
 
 class LogInForm(FlaskForm):
+    """ Login Form """
 
     username = StringField("username_label", 
         validators=[InputRequired(message="Username is required")])
