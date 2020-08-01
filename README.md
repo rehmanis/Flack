@@ -81,7 +81,6 @@ Flack
 
 
 ## License
-****
 MIT License
 
 Copyright (c) [2020] [Rehmani, Shamsuddin]
