@@ -4,7 +4,8 @@ A Slack like online messaging service
 
 
 [![python badge](https://img.shields.io/badge/uses-python3-informational)](https://shields.io/) [![hrml5 badge](https://img.shields.io/badge/uses-html5-informational)](https://shields.io/) [![css badge](https://img.shields.io/badge/uses-css-informational)](https://shields.io/) [![SocketIO](https://img.shields.io/badge/uses-SocketIO-informational)](https://shields.io/) [![flask badge](https://img.shields.io/badge/uses-flask-informational)](https://shields.io/) [![SQLAlchemy](https://img.shields.io/badge/uses-SQLAlchemy-informational)](https://shields.io/) 
-[![Heroku](https://heroku-badge.herokuapp.com/?app=virtual-trading)](https://www.heroku.com/) 
+[![Heroku](https://heroku-badge.herokuapp.com/?app=flack-ap)](https://www.heroku.com/) 
+
 
 
 ## Demo
